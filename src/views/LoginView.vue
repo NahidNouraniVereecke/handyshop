@@ -4,7 +4,7 @@
     <main>
       <div class="container">
         <div class="login-form">
-          <h2>Login</h2>
+          <h1>Login</h1>
           <div class="form-field">
             <FormField
               fieldId="username"
@@ -23,6 +23,15 @@
               fieldPlaceholder="Geben Sie Ihr Passwort ein"
             />
           </div>
+          <div class="form-field">
+            <CheckboxAtom :id="rememberMeId" :label="rememberMeLabel" />
+          </div>
+          <div class="form-field">
+            <LinkAtom href="#">Passwort vergessen?</LinkAtom>
+          </div>
+          <div class="form-field">
+            <LinkAtom href="#">Neu hier? Hier registrieren!</LinkAtom>
+          </div>
           <div class="form-field" id="button-field">
             <ButtonAtom @click="handleLogin">Anmelden</ButtonAtom>
           </div>
@@ -35,11 +44,16 @@
 <script>
 import FormField from '@/components/molecules/FormField';
 import ButtonAtom from '@/components/atoms/ButtonAtom';
+import LinkAtom from '@/components/atoms/LinkAtom';
+import CheckboxAtom from '@/components/atoms/CheckboxAtom';
+
 
 export default {
   components: {
     FormField,
     ButtonAtom,
+    LinkAtom,
+    CheckboxAtom,
   },
   methods: {
     handleLogin() {
@@ -78,7 +92,7 @@ export default {
 .form-field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  
   
 }
 
