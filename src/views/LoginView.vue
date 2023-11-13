@@ -23,7 +23,9 @@
               fieldPlaceholder="Geben Sie Ihr Passwort ein"
             />
           </div>
-          <button @click="handleLogin">Anmelden</button>
+          <div class="form-field" id="button-field">
+            <ButtonAtom @click="handleLogin">Anmelden</ButtonAtom>
+          </div>
         </div>
       </div>
     </main>
@@ -32,10 +34,12 @@
 
 <script>
 import FormField from '@/components/molecules/FormField';
+import ButtonAtom from '@/components/atoms/ButtonAtom';
 
 export default {
   components: {
     FormField,
+    ButtonAtom,
   },
   methods: {
     handleLogin() {
@@ -49,17 +53,16 @@ export default {
 </script>
 
 <style scoped>
-
 #app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   height: 100vh;
 }
 
 .container {
-  margin-top: 200px; 
+  margin-top: 200px;
   display: flex;
   justify-content: center;
 }
@@ -75,8 +78,13 @@ export default {
 .form-field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px; 
+  margin-bottom: 15px;
+  
 }
+#button-field{
+  align-items: center;
+}
+
 
 .login-form h2 {
   font-size: 1.5em;
