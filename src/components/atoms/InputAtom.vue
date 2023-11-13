@@ -13,9 +13,11 @@
     }
   }
   </script>
-  
+
   <style scoped>
   .input {
-    margin: 10px;
+    margin-top: 10px;
+    height: 30px;
+    border-radius: 8px;
   }
   </style>

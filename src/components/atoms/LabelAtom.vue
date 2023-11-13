@@ -1,5 +1,5 @@
 <template>
-    <label :for="htmlFor">
+    <label :for="htmlFor" class="label">
       <slot></slot>
     </label>
   </template>
@@ -14,5 +14,8 @@
   </script>
   
   <style scoped>
+  .label{
+    margin-left: 10px;
+  }
   
   </style>
