@@ -68,7 +68,7 @@ export default {
 }
 
 .login-form {
-  width: 300px;
+  width: 500px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -81,13 +81,5 @@ export default {
   margin-bottom: 15px;
   
 }
-#button-field{
-  align-items: center;
-}
 
-
-.login-form h2 {
-  font-size: 1.5em;
-  margin-bottom: 15px;
-}
 </style>
