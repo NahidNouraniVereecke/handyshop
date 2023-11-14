@@ -4,7 +4,7 @@
     <main>
       <div class="container">
         <div class="login-form">
-          <h1>Login</h1>
+          <TitleAtom :text="'Login'" />
           <div class="container-fluid">
             <FormField
               fieldId="username"
@@ -45,6 +45,7 @@ import FormField from '@/components/molecules/FormField';
 import ButtonAtom from '@/components/atoms/ButtonAtom';
 import LinkAtom from '@/components/atoms/LinkAtom';
 import CheckboxField from '@/components/molecules/CheckboxField';
+import TitleAtom from '@/components/atoms/TitleAtom.vue';
 
 
 export default {
@@ -53,6 +54,7 @@ export default {
     ButtonAtom,
     LinkAtom,
     CheckboxField,
+    TitleAtom
   },
   methods: {
     handleLogin() {

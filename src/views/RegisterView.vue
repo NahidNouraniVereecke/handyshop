@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="registeration-form">
-        <h1>Registrieren</h1>
+        <TitleAtom :text="'Registrieren'" />
         <form @submit.prevent="submitForm">
           <div class="container-fluid">
         
@@ -58,6 +58,7 @@
   import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
   import FormField from "@/components/molecules/FormField.vue";
   import LinkAtom from "@/components/atoms/LinkAtom.vue";
+  import TitleAtom from "@/components/atoms/TitleAtom.vue";
 
   
   export default {
@@ -66,7 +67,8 @@
       CheckboxField,
       ButtonAtom,
       FormField,
-      LinkAtom
+      LinkAtom, 
+      TitleAtom
 
     },
     data() {
