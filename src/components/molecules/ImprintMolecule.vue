@@ -1,13 +1,13 @@
 <template>
     <div class="imprint-molecule">
-      <TitleAtom type="h4">{{ title }}&nbsp;</TitleAtom>
+      <HeaderAtom type="h4">{{ title }}&nbsp;</HeaderAtom>
       <ParagraphAtom>{{ text }}</ParagraphAtom>
     </div>
   </template>
   
   <script>
   import ParagraphAtom from '../atoms/ParagraphAtom.vue';
-  import TitleAtom from '../atoms/TitleAtom.vue';
+  import HeaderAtom from '../atoms/headerAtom.vue';
   
   export default {
     name: 'ImprintMolecule',
@@ -16,7 +16,7 @@
       text: String,
     },
     components: {
-      TitleAtom,
+      HeaderAtom,
       ParagraphAtom,
     },
   };
