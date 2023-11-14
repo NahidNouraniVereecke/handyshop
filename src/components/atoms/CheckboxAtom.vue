@@ -1,5 +1,5 @@
 <template>
-    <div class="checkbox-field">
+    <div class="checkbox">
       <input type="checkbox" :id="id" :checked="localChecked" @change="handleChange" :required="isRequired" />
     </div>
   </template>
@@ -26,9 +26,10 @@
   </script>
   
   <style scoped>
-  .checkbox-field {
-    margin-top: 10px;
+  .checkbox{
+  margin-left: 10px;
   }
+  
   </style>
   
   

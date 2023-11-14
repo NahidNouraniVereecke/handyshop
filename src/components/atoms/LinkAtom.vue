@@ -18,6 +18,7 @@
     color: blue; 
     text-decoration: underline;
     cursor: pointer;
+    margin-left: 10px;
   }
   </style>
   
