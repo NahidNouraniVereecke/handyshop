@@ -5,7 +5,7 @@
     <router-link to="/login">Login</router-link> |
     <router-link to="/register">Register</router-link> |
     <router-link to="/help">Help Page</router-link>|
-    <router-link to="/impressum">Impressum</router-link>
+    <router-link to="/impressum">Imprint</router-link>
   </nav>
   <router-view/>
 </template>
