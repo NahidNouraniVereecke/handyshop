@@ -18,7 +18,6 @@
   </template>
   
   <script>
-  // Hier kannst du die Molekül- und Atomkomponenten importieren
 import TitleAtom from '@/components/atoms/TitleAtom.vue';
 import FaqComponent from '@/components/molecules/FaqComponent.vue'
 import HeaderAtom from '@/components/atoms/headerAtom.vue';

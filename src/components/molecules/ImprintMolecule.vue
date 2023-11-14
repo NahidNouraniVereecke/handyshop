@@ -24,10 +24,10 @@
 
 <style scoped>
 .imprint-molecule {
-  display: flex;  /* Verwendet Flexbox-Layout */
+  display: flex;  
   flex-wrap: wrap; /* Erlaubt das Umbruch der Zeilen */
   align-items: center; /* Zentriert die Kinder vertikal */
-  max-width: 600px; /* Setze eine maximale Breite für den Container */
+  max-width: 600px; /* Setzt eine maximale Breite für den Container */
   margin-top: -30px;
 }
 
