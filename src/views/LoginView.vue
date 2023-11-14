@@ -4,8 +4,8 @@
     <main>
       <div class="container">
         <div class="login-form">
-          <h1>Login</h1>
-          <div class="form-field">
+          <TitleAtom :text="'Login'" />
+          <div class="container-fluid">
             <FormField
               fieldId="username"
               fieldType="text"
@@ -13,8 +13,8 @@
               fieldValue=""
               fieldPlaceholder="Geben Sie Ihren Benutzernamen ein"
             />
-          </div>
-          <div class="form-field">
+        
+          
             <FormField
               fieldId="password"
               fieldType="password"
@@ -22,19 +22,18 @@
               fieldValue=""
               fieldPlaceholder="Geben Sie Ihr Passwort ein"
             />
-          </div>
-          <div class="form-field">
-            <CheckboxAtom :id="rememberMeId" :label="rememberMeLabel" />
-          </div>
-          <div class="form-field">
-            <LinkAtom href="#">Passwort vergessen?</LinkAtom>
-          </div>
-          <div class="form-field">
-            <LinkAtom href="#">Neu hier? Hier registrieren!</LinkAtom>
-          </div>
-          <div class="form-field" id="button-field">
+            <CheckboxField :id="rememberMeId" :label="'Anmeldedaten merken'" />
+          <div>
             <ButtonAtom @click="handleLogin">Anmelden</ButtonAtom>
-          </div>
+            </div>
+            <div>
+                  <LinkAtom href="#">Passwort vergessen?</LinkAtom>
+                </div>
+                
+                <div>
+                  <LinkAtom href="/register">Neu hier? Hier registrieren!</LinkAtom>
+                </div>
+                </div>
         </div>
       </div>
     </main>
@@ -45,7 +44,8 @@
 import FormField from '@/components/molecules/FormField';
 import ButtonAtom from '@/components/atoms/ButtonAtom';
 import LinkAtom from '@/components/atoms/LinkAtom';
-import CheckboxAtom from '@/components/atoms/CheckboxAtom';
+import CheckboxField from '@/components/molecules/CheckboxField';
+import TitleAtom from '@/components/atoms/TitleAtom.vue';
 
 
 export default {
@@ -53,7 +53,8 @@ export default {
     FormField,
     ButtonAtom,
     LinkAtom,
-    CheckboxAtom,
+    CheckboxField,
+    TitleAtom
   },
   methods: {
     handleLogin() {
@@ -92,8 +93,8 @@ export default {
 .form-field {
   display: flex;
   flex-direction: column;
-  
-  
+  margin-bottom: 15px;
 }
+
 
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="registeration-form">
-        <h1>Registrieren</h1>
+        <TitleAtom :text="'Registrieren'" />
         <form @submit.prevent="submitForm">
           <div class="container-fluid">
         
@@ -36,14 +36,14 @@
             <FormField :fieldId="'ort'" :fieldLabel="'Ort'" :fieldType="'text'" v-model="formData.ort" :fieldPlaceholder="''" :isRequired="true" />
   
             
-            <CheckboxAtom :id="'agree'" :label="'Ich akzeptiere die Nutzungsbedingungen.'" v-model="formData.agree" :required="true" />
+            <CheckboxField :id="'agree'" :label="'Ich akzeptiere die Nutzungsbedingungen.'" v-model="formData.agree" :required="true" />
   
             
-            <div  id="button-field">
+            <div>
             <ButtonAtom @click="handleLogin">Registrieren</ButtonAtom>
             </div>
             <div>
-            <LinkAtom url="/login">Noch nicht registriert? Hier geht es zur Registrierung!</LinkAtom>
+            <LinkAtom url="/login">Schon registriert?Hier geht es zur Login!</LinkAtom>
         </div>
             
           </div>
@@ -54,19 +54,21 @@
   
   <script>
   import SelectField from "@/components/molecules/SelectField.vue";
-  import CheckboxAtom from "@/components/atoms/CheckboxAtom.vue";
+  import CheckboxField from "@/components/molecules/CheckboxField.vue";
   import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
   import FormField from "@/components/molecules/FormField.vue";
   import LinkAtom from "@/components/atoms/LinkAtom.vue";
+  import TitleAtom from "@/components/atoms/TitleAtom.vue";
 
   
   export default {
     components: {
       SelectField,
-      CheckboxAtom,
+      CheckboxField,
       ButtonAtom,
       FormField,
-      LinkAtom
+      LinkAtom, 
+      TitleAtom
 
     },
     data() {
@@ -125,8 +127,6 @@
   margin-bottom: 15px;
   
 }
-#button-field{
-  align-items: center;
-}
+
   </style>
   
