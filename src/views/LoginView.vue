@@ -4,8 +4,8 @@
     <main>
       <div class="container">
         <div class="login-form">
-          <h2>Login</h2>
-          <div class="form-field">
+          <TitleAtom :text="'Login'" />
+          <div class="container-fluid">
             <FormField
               fieldId="username"
               fieldType="text"
@@ -13,8 +13,8 @@
               fieldValue=""
               fieldPlaceholder="Geben Sie Ihren Benutzernamen ein"
             />
-          </div>
-          <div class="form-field">
+        
+          
             <FormField
               fieldId="password"
               fieldType="password"
@@ -22,8 +22,18 @@
               fieldValue=""
               fieldPlaceholder="Geben Sie Ihr Passwort ein"
             />
-          </div>
-          <button @click="handleLogin">Anmelden</button>
+            <CheckboxField :id="rememberMeId" :label="'Anmeldedaten merken'" />
+          <div>
+            <ButtonAtom @click="handleLogin">Anmelden</ButtonAtom>
+            </div>
+            <div>
+                  <LinkAtom href="#">Passwort vergessen?</LinkAtom>
+                </div>
+                
+                <div>
+                  <LinkAtom href="/register">Neu hier? Hier registrieren!</LinkAtom>
+                </div>
+                </div>
         </div>
       </div>
     </main>
@@ -32,10 +42,19 @@
 
 <script>
 import FormField from '@/components/molecules/FormField';
+import ButtonAtom from '@/components/atoms/ButtonAtom';
+import LinkAtom from '@/components/atoms/LinkAtom';
+import CheckboxField from '@/components/molecules/CheckboxField';
+import TitleAtom from '@/components/atoms/TitleAtom.vue';
+
 
 export default {
   components: {
     FormField,
+    ButtonAtom,
+    LinkAtom,
+    CheckboxField,
+    TitleAtom
   },
   methods: {
     handleLogin() {
@@ -49,23 +68,22 @@ export default {
 </script>
 
 <style scoped>
-
 #app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   height: 100vh;
 }
 
 .container {
-  margin-top: 200px; 
+  margin-top: 200px;
   display: flex;
   justify-content: center;
 }
 
 .login-form {
-  width: 300px;
+  width: 500px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -75,11 +93,8 @@ export default {
 .form-field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px; 
-}
-
-.login-form h2 {
-  font-size: 1.5em;
   margin-bottom: 15px;
 }
+
+
 </style>

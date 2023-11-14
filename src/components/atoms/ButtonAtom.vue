@@ -1,5 +1,5 @@
 <template>
-    <button @click="handleClick">
+    <button @click="handleClick" class="button">
       <slot></slot>
     </button>
   </template>
@@ -14,5 +14,10 @@
   </script>
   
   <style scoped>
+  .button{
+    height: 35px;
+    margin: 10px;
+    border-radius: 8px;
+  }
   
   </style>
