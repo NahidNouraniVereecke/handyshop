@@ -1,29 +1,29 @@
 <template>
   <div class="navbar-container">
     <div class="centered-elements">
-      <LinkAtom :url="'/'">Home</LinkAtom>
-      <LinkAtom :url="'/about'">About</LinkAtom>
-      <LinkAtom :url="'/help'">Help Page</LinkAtom>
-      <LinkAtom :url="'/impressum'">Imprint</LinkAtom>
-      <LinkAtom :url="'/products'">Produkte</LinkAtom>
+      <RouterLinkAtom :url="'/'">Home</RouterLinkAtom>
+      <RouterLinkAtom :url="'/about'">About</RouterLinkAtom>
+      <RouterLinkAtom :url="'/help'">Help Page</RouterLinkAtom>
+      <RouterLinkAtom :url="'/impressum'">Imprint</RouterLinkAtom>
+      <RouterLinkAtom :url="'/products'">Produkte</RouterLinkAtom>
       <InputAtom id="input" />
     </div>
 
     <div class="right-elements">
-      <LinkAtom :url="'/login'">Login</LinkAtom>
-      <LinkAtom :url="'/register'">Register</LinkAtom>
+      <RouterLinkAtom :url="'/login'">Login</RouterLinkAtom>
+      <RouterLinkAtom :url="'/register'">Register</RouterLinkAtom>
     </div>
   </div>
 </template>
 
 <script>
 import InputAtom from "@/components/atoms/InputAtom.vue";
-import LinkAtom from "@/components/atoms/LinkAtom.vue";
+import RouterLinkAtom from "@/components/atoms/RouterLinkAtom.vue";
 
 export default {
   components: {
     InputAtom,
-    LinkAtom,
+    RouterLinkAtom,
   },
 };
 </script>
