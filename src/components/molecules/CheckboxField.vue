@@ -1,6 +1,6 @@
 <template>
     <div class="checkbox">
-      <checkboxAtom type="checkbox" :checked="isChecked" @change="handleChange" />
+      <checkboxAtom type="checkbox" :checked="isChecked"  />
       <LabelAtom :htmlFor="id">{{ label }}</LabelAtom>
     </div>
   </template>
