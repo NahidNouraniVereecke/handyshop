@@ -40,7 +40,7 @@
 
           
           <div>
-          <ButtonAtom @click="handleLogin">Registrieren</ButtonAtom>
+          <ButtonAtom>Registrieren</ButtonAtom>
           </div>
           <div>
           <LinkAtom url="/login">Schon registriert?Hier geht es zur Login!</LinkAtom>
