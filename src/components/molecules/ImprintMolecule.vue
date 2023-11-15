@@ -1,13 +1,13 @@
 <template>
     <div class="imprint-molecule">
-      <TitleAtom type="h4">{{ title }}&nbsp;</TitleAtom>
+      <HeaderAtom type="h4">{{ title }}&nbsp;</HeaderAtom>
       <ParagraphAtom>{{ text }}</ParagraphAtom>
     </div>
   </template>
   
   <script>
   import ParagraphAtom from '../atoms/ParagraphAtom.vue';
-  import TitleAtom from '../atoms/TitleAtom.vue';
+  import HeaderAtom from '../atoms/headerAtom.vue';
   
   export default {
     name: 'ImprintMolecule',
@@ -16,7 +16,7 @@
       text: String,
     },
     components: {
-      TitleAtom,
+      HeaderAtom,
       ParagraphAtom,
     },
   };
@@ -24,10 +24,10 @@
 
 <style scoped>
 .imprint-molecule {
-  display: flex;  /* Verwendet Flexbox-Layout */
+  display: flex;  
   flex-wrap: wrap; /* Erlaubt das Umbruch der Zeilen */
   align-items: center; /* Zentriert die Kinder vertikal */
-  max-width: 600px; /* Setze eine maximale Breite für den Container */
+  max-width: 600px; /* Setzt eine maximale Breite für den Container */
   margin-top: -30px;
 }
 

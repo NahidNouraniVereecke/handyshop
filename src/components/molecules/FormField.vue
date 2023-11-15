@@ -2,7 +2,13 @@
 <template>
   <div class="form-field">
     <LabelAtom :htmlFor="fieldId">{{ fieldLabel }}</LabelAtom>
-    <InputAtom :id="fieldId" :type="fieldType" :value="fieldValue" :placeholder="fieldPlaceholder" />
+    <InputAtom
+      :id="fieldId"
+      :type="fieldType"
+      :value="fieldValue"
+      :placeholder="fieldPlaceholder"
+    />
+    
   </div>
 </template>
 
@@ -21,6 +27,7 @@ export default {
     fieldLabel: String,
     fieldValue: String,
     fieldPlaceholder: String,
+  
   },
 };
 </script>
@@ -31,4 +38,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
+
 </style>
