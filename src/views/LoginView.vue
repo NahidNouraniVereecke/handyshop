@@ -6,34 +6,44 @@
         <div class="login-form">
           <TitleAtom :text="'Login'" />
           <div class="container-fluid">
-            <FormField
-              fieldId="username"
-              fieldType="text"
-              fieldLabel="Benutzername:"
-              fieldValue=""
-              fieldPlaceholder="Geben Sie Ihren Benutzernamen ein"
-            />
-        
-          
-            <FormField
-              fieldId="password"
-              fieldType="password"
-              fieldLabel="Passwort:"
-              fieldValue=""
-              fieldPlaceholder="Geben Sie Ihr Passwort ein"
-            />
-            <CheckboxField :id="rememberMeId" :label="'Anmeldedaten merken'" />
-          <div>
-            <ButtonAtom @click="handleLogin">Anmelden</ButtonAtom>
-            </div>
-            <div>
-                  <LinkAtom href="#">Passwort vergessen?</LinkAtom>
-                </div>
-                
-                <div>
-                  <LinkAtom href="/register">Neu hier? Hier registrieren!</LinkAtom>
-                </div>
-                </div>
+            <form @submit.prevent="submit">
+      <div >
+        <div>
+          <label for="username">Username</label>
+        </div>
+ 
+        <div>
+          <input type="text" id="username" v-model="form.values.username" @blur="validate('username')" />
+        </div>
+        <p class ="error-message" v-if="!!form.errors.username">
+          {{ form.errors.username }}
+        </p>
+      </div>
+      <div >
+        <div>
+          <label for="password">Password</label>
+        </div>
+        <div>
+          <input type="password" id="password" v-model="form.values.password" @blur="validate('password')" />
+        </div>
+        <p class ="error-message" v-if="!!form.errors.password">
+          {{ form.errors.password }}
+        </p>
+      </div>
+      <div>
+        <CheckboxField :id="rememberMeId" :label="'Remember login information'" />
+      </div>
+      <div>
+        <button type="submit">Login</button>
+      </div>
+      <div>
+        <LinkAtom href="#">Forgot your Password?</LinkAtom>
+      </div>
+      <div>
+        <LinkAtom href="/register">New here? Register here!</LinkAtom>
+      </div>
+    </form>
+          </div>
         </div>
       </div>
     </main>
@@ -41,30 +51,76 @@
 </template>
 
 <script>
-import FormField from '@/components/molecules/FormField';
-import ButtonAtom from '@/components/atoms/ButtonAtom';
+import { object, string } from 'yup';
 import LinkAtom from '@/components/atoms/LinkAtom';
 import CheckboxField from '@/components/molecules/CheckboxField';
 import TitleAtom from '@/components/atoms/TitleAtom.vue';
 
+const loginSchema = object().shape({
+  username: string().max(20, 'Username must be at most 20 characters.').matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters and numbers.').required(),
+  password: string().min(8, 'Password must have atleast 8 zeichen').required(),
+});
 
 export default {
+  name: 'LoginView',
   components: {
-    FormField,
-    ButtonAtom,
     LinkAtom,
     CheckboxField,
     TitleAtom
   },
-  methods: {
-    handleLogin() {
-      const username = this.$refs.username.fieldValue;
-      const password = this.$refs.password.fieldValue;
-
-      console.log('Attempting login with username:', username, 'and password:', password);
-    },
+  data() {
+    return {
+      form: {
+        values: {
+          username: '',
+          password: '',
+        },
+        errors: {
+          username: '',
+          password: '',
+        },
+      },
+    };
   },
-};
+  methods: {
+    validate(field){
+      loginSchema
+        .validateAt(field, this.form.values)
+        .then(() => {
+         
+          this.form.errors[field] = '';
+        }).catch((err) => {
+          console.log(err);
+          this.form.errors[field] = err.message;
+        });
+    },
+    async submit() {
+        
+        loginSchema
+          .validate(this.form.values, {
+            abortEarly: false,
+          }).then(async () => {
+         
+            this.form.errors = {
+              username: '',
+              password: '',
+            };
+
+            console.log("login succesfull");
+          }).catch((err) => {
+            console.log('login not succesfull');
+            console.log(err);
+            
+            if (err.inner) {
+            
+              err.inner.forEach((error) => {
+                this.form.errors[error.path] = error.message;
+              });
+            }
+          });
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -82,6 +138,8 @@ export default {
   justify-content: center;
 }
 
+
+
 .login-form {
   width: 500px;
   padding: 20px;
@@ -94,7 +152,13 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
+  
 }
 
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
 
 </style>

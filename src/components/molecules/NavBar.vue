@@ -2,11 +2,10 @@
   <div class="navbar-container">
     <div class="centered-elements">
       <RouterLinkAtom :url="'/'">Home</RouterLinkAtom>
-      <RouterLinkAtom :url="'/about'">About</RouterLinkAtom>
-      <RouterLinkAtom :url="'/help'">Help Page</RouterLinkAtom>
+      <RouterLinkAtom :url="'/products'">Products</RouterLinkAtom>
+      <RouterLinkAtom :url="'/help'">HelpPage</RouterLinkAtom>
       <RouterLinkAtom :url="'/impressum'">Imprint</RouterLinkAtom>
-      <RouterLinkAtom :url="'/products'">Produkte</RouterLinkAtom>
-      <InputAtom id="input" />
+      <InputAtom id="input" placeholder=" search" />
     </div>
 
     <div class="right-elements">

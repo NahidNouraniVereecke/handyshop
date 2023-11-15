@@ -1,7 +1,7 @@
 <template>
   <div>
   <header>
-    <TitleAtom type="h1">Imprint</TitleAtom>
+    <HeaderAtom type="h1">Imprint</HeaderAtom>
   </header>
   <main>
   <section>
@@ -23,13 +23,13 @@
 
 <script>
 import ImprintMolecule from "@/components/molecules/ImprintMolecule.vue";
-import TitleAtom from '@/components/atoms/TitleAtom.vue';
+import HeaderAtom from "@/components/atoms/headerAtom.vue";
 
 export default {
   name: `ImprintView`,
   components: {
     ImprintMolecule,
-    TitleAtom,
+    HeaderAtom
   },
 }
 </script>

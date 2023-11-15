@@ -5,7 +5,7 @@
     <ShortDescriptionAtom :shortDescription="shortDescription" />
     <PriceAtom :price="price" />
     <DeliveryTimeAtom :deliveryTime="deliveryTime" />
-    <ButtonAtom @click="addToCart">Kauf </ButtonAtom>
+    <ButtonAtom @click="addToCart">Buy </ButtonAtom>
   </div>
 </template>
 
