@@ -1,50 +1,32 @@
 <template>
-  <div class="navbar-container">
-    <div class="centered-elements">
-      <RouterLinkAtom :url="'/'">Home</RouterLinkAtom>
-      <RouterLinkAtom :url="'/products'">Products</RouterLinkAtom>
-      <RouterLinkAtom :url="'/help'">HelpPage</RouterLinkAtom>
-      <RouterLinkAtom :url="'/impressum'">Imprint</RouterLinkAtom>
-      <InputAtom id="input" placeholder=" search" />
-    </div>
+  <div class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <router-link to="/" class="navbar-brand">Home</router-link>
+      <router-link to="/products" class="nav-link mb-2">Products</router-link>
+      <router-link to="/help" class="nav-link mb-2">HelpPage</router-link>
+      <router-link to="/impressum" class="nav-link mb-2">Imprint</router-link>
 
-    <div class="right-elements">
-      <RouterLinkAtom :url="'/login'">Login</RouterLinkAtom>
-      <RouterLinkAtom :url="'/register'">Register</RouterLinkAtom>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+      </div>
+
+      <div class="ms-auto">
+        <router-link to="/login" class="nav-link">Login</router-link>
+        <router-link to="/register" class="nav-link">Register</router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import InputAtom from "@/components/atoms/InputAtom.vue";
-import RouterLinkAtom from "@/components/atoms/RouterLinkAtom.vue";
+ 
 
-export default {
-  components: {
-    InputAtom,
-    RouterLinkAtom,
-  },
-};
+ 
 </script>
 
 <style scoped>
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  background-color: green;
-  padding: 10px;
-}
-
-.centered-elements {
-  display: flex;
-  align-items: center;
-}
-
-.right-elements {
-  display: flex;
-  align-items: center;
-}
-#input{
-  margin-left: 20px;
+.nav-link {
+  margin-right: 10px; /* Adjust the margin as needed */
 }
 </style>
