@@ -34,6 +34,31 @@ const routes = [
     component: () => import('../views/RegisterView.vue')
   },
   {
+    path: '/editProfile',
+    name: 'editProfile',
+    component: () => import( '../views/EditProfile.vue')
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: () => import( '../views/LogoutView.vue')
+  },
+  {
+    path: '/productMang',
+    name: 'productMang',
+    component: () => import( '../views/ProductManagement.vue')
+  },
+  {
+    path: '/shoppingCart',
+    name: 'shoppingCart',
+    component: () => import( '../views/ShoppingCartView.vue')
+  },
+  {
+    path: '/userMang',
+    name: 'userMang',
+    component: () => import( '../views/UserManagement.vue')
+  },
+  {
     path: '/impressum',
     name: 'Impressum',
     component: () => import( '../views/ImpressumView.vue')
