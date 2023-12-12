@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+const userRole = localStorage.getItem('role');
 
 const routes = [
   {
@@ -29,6 +30,11 @@ const routes = [
     component: () => import('../views/HelpView.vue')
   },
   {
+    path: '/access-denied',
+    name: 'access-denied',
+    component: () => import( '../views/AccessDenied.vue')
+  },
+  {
     path: '/register',
     name: 'register',
     component: () => import('../views/RegisterView.vue')
@@ -41,22 +47,46 @@ const routes = [
   {
     path: '/logout',
     name: 'logout',
-    component: () => import( '../views/LogoutView.vue')
+    component: () => import( '../views/LogoutView.vue'),
   },
   {
     path: '/productMang',
     name: 'productMang',
-    component: () => import( '../views/ProductManagement.vue')
+    component: () => import( '../views/ProductManagement.vue'),
+    beforeEnter: (to, from, next) => {
+       if (userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/shoppingCart',
     name: 'shoppingCart',
-    component: () => import( '../views/ShoppingCartView.vue')
+    component: () => import( '../views/ShoppingCartView.vue'),
+    beforeEnter: (to, from, next) => {
+       if (userRole === "ROLE_user")  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/userMang',
     name: 'userMang',
-    component: () => import( '../views/UserManagement.vue')
+    component: () => import( '../views/UserManagement.vue'),
+    beforeEnter: (to, from, next) => {
+       if (userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/impressum',
