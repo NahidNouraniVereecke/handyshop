@@ -7,7 +7,8 @@
       :type="fieldType"
       :value="fieldValue"
       :placeholder="fieldPlaceholder"
-    />
+      @change="handleInputChange"
+      />
     
   </div>
 </template>
@@ -29,8 +30,15 @@ export default {
     fieldPlaceholder: String,
   
   },
+  methods: {
+    handleInputChange(event) {
+      const inputValue = event.target.value;
+      this.$emit('input', inputValue);
+    },
+  },
 };
 </script>
+
 
 <style scoped>
 .form-field {
