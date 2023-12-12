@@ -137,25 +137,29 @@ export default {
         const username = localStorage.getItem('username')
         console.log(username);
 
-        const backendUrl2 = 'http://localhost:8081/user/role/';
+        const backendUrl2 = 'http://localhost:8081/users/username/';
 
 
         try{
-          const response = await axios.get(`${backendUrl2}${username}`);
+          const response = await axios.get(`${backendUrl2}${username}`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
 
-          const userRole = response.data; // Annahme: Die Rolle des Benutzers wird als Text/String zurückgegeben
+          const user = response.data; // Annahme: Die Rolle des Benutzers wird als Text/String zurückgegeben
             // Verwende userRole entsprechend deiner Anforderungen
 
-          console.log('Benutzerrolle:', userRole);
+          console.log('Benutzer:', user);
 
-          localStorage.setItem('role', userRole);
+          localStorage.setItem('role',user.role);
           const userRoleL = localStorage.getItem('role');
           console.log(userRoleL);
 
-          this.store.setUserInfo(username, userRole);
+          this.store.setUserInfo(user);
          
 
-          //this.$emit('login-success', userRole);
+          
 
 
         }catch (err){
