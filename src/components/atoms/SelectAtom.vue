@@ -1,32 +1,19 @@
 <template>
-    <select class="select" :id="id" v-model="localSelectedValue" :required="isRequired">
-      <option v-for="option in options" :value="option" :key="option">{{ option }}</option>
-    </select>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      id: String,
-      options: Array,
-      selectedValue: String,
-      isRequired: Boolean,
-    },
-    data() {
-      return {
-        localSelectedValue: this.selectedValue,
-      };
-    },
-    watch: {
-      localSelectedValue(newVal) {
-        this.$emit("update:selectedValue", newVal);
-      },
-      selectedValue(newVal) {
-        this.localSelectedValue = newVal;
-      },
-    },
-  };
-  </script>
+  <select :id="id" :required="required" >
+    <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
+  </select>
+</template>
+
+<script>
+export default {
+  props: {
+    id: String,
+    options: Array,
+    value: String,
+    required: Boolean,
+  },
+};
+</script>
   
   <style scoped>
   .select {
