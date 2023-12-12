@@ -1,6 +1,17 @@
 
 <template>
   <div id="app">
+    
+    <div>
+    <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ alertMessage }}
+      <button type="button" class="close" @click="dismissAlert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+    
+
     <main>
       <div class="container">
         <div class="login-form">
@@ -42,6 +53,7 @@
         </div>
       </div>
     </main>
+
   </div>
 </template>
 
@@ -76,9 +88,14 @@ export default {
           password: '',
         },
       },
+      showDismissibleAlert: false,
+      alertMessage: '',
     };
   },
   methods: {
+    dismissAlert() {
+      this.showDismissibleAlert = false;
+    },
     validate(field) {
       loginSchema
         .validateAt(field, this.form.values)
@@ -114,8 +131,48 @@ export default {
         const accessToken = localStorage.getItem('access_token');
         console.log(accessToken);
 
+        localStorage.setItem('username', this.form.values.username)
+        const username = localStorage.getItem('username')
+        console.log(username);
+
+        const backendUrl2 = 'http://localhost:8081/user/role/';
+
+
+        try{
+          const response = await axios.get(`${backendUrl2}${username}`);
+
+          const userRole = response.data; // Annahme: Die Rolle des Benutzers wird als Text/String zurückgegeben
+            // Verwende userRole entsprechend deiner Anforderungen
+
+          console.log('Benutzerrolle:', userRole);
+
+          localStorage.setItem('role', userRole);
+          const userRoleL = localStorage.getItem('role');
+          console.log(userRoleL);
+
+
+        }catch (err){
+          console.error('Login nicht erfolgreich:', err);
+
+          this.alertMessage = 'Es gab ein internes Problem versuchen Sie es später nochmal.';
+          this.showDismissibleAlert = true;
+        }
+
+      
+        this.showDismissibleAlert = false; // Verberge die Alert-Box, falls sie vorher sichtbar war
+        this.alertMessage = ''; // Setze die Meldung zurück
+
+    
+        this.$router.push({ name: 'home' });
+
       } catch (err) {
         console.error('Login nicht erfolgreich:', err);
+
+        this.alertMessage = 'Login nicht erfolgreich. Überprüfe deine Anmeldedaten.';
+        this.showDismissibleAlert = true;
+
+       
+
 
         if (err.inner) {
           err.inner.forEach((error) => {
