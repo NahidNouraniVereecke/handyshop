@@ -48,6 +48,7 @@ export const useUserStore = defineStore('user', {
                         this.postalcode = user.postalcode;
                         this.country = user.country;
                         this.profilPicture = user.profilPicture;
+                        
                     }else{
                         console.error('Ungültiges Datenformat in der API-Antwort.');
                     }
