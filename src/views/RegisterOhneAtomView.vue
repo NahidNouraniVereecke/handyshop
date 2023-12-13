@@ -62,11 +62,11 @@
             <div class="form-field">
               
               <label class="small mb-1" for="inputStreet">Street</label>
-                  <input class="form-control" id="inputStreet" type="text" placeholder="Enter your Streetname" v-model="store.street">
+                  <input class="form-control" id="inputStreet" type="text" placeholder="Enter your Street name" v-model="store.street">
             </div>
             <div>
                 <label class="small mb-1" for="inputHauseNumber">Hause Number</label>
-                  <input class="form-control" id="inputHauseNumber" type="text" placeholder="Enter your Flat Number" v-model="store.hauseNumber">
+                  <input class="form-control" id="inputHauseNumber" type="text" placeholder="Enter your Hause Number" v-model="store.hauseNumber">
             </div>
             <div>
                 <label class="small mb-1" for="inputFlatNumber">Flat Number</label>
@@ -142,6 +142,7 @@
     console.log('Registration successful. Data saved in the database:', response.data);
     successAlertMessage.value = 'Registration successful';
     showSuccessAlert.value = true;
+    //window.location.reload();
   } else {
     console.error('Registration not successful:', response.data);
     alertMessage.value = 'Registration not successful';
