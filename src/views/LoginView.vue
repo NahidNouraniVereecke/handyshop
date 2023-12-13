@@ -2,7 +2,7 @@
 <template>
   <div id="app">
     
-    <div>
+  <div>
     <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
       {{ alertMessage }}
       <button type="button" class="close" @click="dismissAlert" aria-label="Close">
