@@ -25,10 +25,18 @@
 </template>
 
 <script>
+import {useUserStore} from '@/store/user.js';
 export default {
+  data(){
+    return{
+      store: useUserStore(),
+    };
+  },
   methods: {
     shouldShowLink(linkName) {
-      const userRole = localStorage.getItem('role');
+      const userRole = this.store.userRole;
+
+      console.log(this.store.isLoggedIn);
 
       // Wenn die Rolle 'ROLE_user' ist
       if (userRole === 'ROLE_user') {
@@ -66,9 +74,10 @@ export default {
       }
 
       return false; // Standardmäßig nichts anzeigen
-    }
-  }
-}
+    },
+    
+  },
+};
 </script>
 
 

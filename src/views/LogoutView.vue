@@ -11,7 +11,13 @@
   </template>
   
   <script>
+  import {useUserStore} from '@/store/user.js';
   export default {
+    data(){
+      return{
+        store: useUserStore(),
+      };
+    },
     methods: {
       logout() {
 
@@ -33,9 +39,10 @@
         console.log(localStorage.getItem('access_token'));
         console.log("Username:")
         console.log(localStorage.getItem('username'));
-        
 
-    
+        //this.$emit('logout-success');
+
+        this.store.clearUserInfo();
         this.$router.push({ name: 'home' });
       }
     }
