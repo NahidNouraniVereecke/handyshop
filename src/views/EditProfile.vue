@@ -3,11 +3,19 @@
     <div>
       <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
         {{ alertMessage }}
-        <button type="button" class="close" @click="dismissAlert" aria-label="Close">
+        <b-button variant="danger" type="button" class="close" @click="dismissAlert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </b-button>
+      </div>
+      <div v-if="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ successAlertMessage }}
+        <b-button variant="success" type="button" class="close" @click="dismissSuccessAlert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </b-button>
       </div>
     </div>
+    
+
     <!-- Account page navigation -->
     <h1>Edit your User Information</h1>
     <hr class="mt-0 mb-4">
@@ -29,6 +37,7 @@
                   <select class="form-control" id="inputSalutation" v-model="store.salutation">
                     <option value="MR" :selected="store.salutation === 'MR'">MR</option>
                     <option value="MRS" :selected="store.salutation === 'MRS'">MRS</option>
+                    <option value="OTHER" :selected="store.salutation === 'OTHER'">OTHER</option>
                   </select>
                 </div>
                 <!-- Form Group (first name) -->
@@ -59,7 +68,6 @@
                   <label class="small mb-1" for="inputPasswordAgain">Password again</label>
                   <input class="form-control" id="inputPasswordAgain" type="password" placeholder="Enter your new Password again">
                 </div>
-                <input hidden type="password" id="oldPasswod" v-model="store.password">
               </div>
               
 
@@ -115,7 +123,8 @@ export default {
     const initialUsername = ref(store.username);
     const showDismissibleAlert = ref(false);
     const alertMessage = ref('');
-
+    const showSuccessAlert = ref(false);
+    const successAlertMessage = ref('');
     const items = [
       {
         username: store.username,
@@ -136,13 +145,10 @@ export default {
     const saveChanges = () => {
       const inputPassword = document.getElementById('inputPassword').value;
       const inputPasswordAgain = document.getElementById('inputPasswordAgain').value;
-      const oldPassword = document.getElementById('oldPasswod').value;
       let newPassword = '';
 
-      if (inputPassword === inputPasswordAgain && inputPassword !== '') {
+      if (inputPassword === inputPasswordAgain && inputPassword !== '' && inputPasswordAgain !== '') {
         newPassword = inputPassword;
-      } else if (inputPassword === '' && inputPasswordAgain === '') {
-        newPassword = oldPassword;
       } else {
         alertMessage.value = 'Passwords don\'t match';
         showDismissibleAlert.value = true;
@@ -164,32 +170,48 @@ export default {
         postalcode: store.postalcode,
       };
 
-      console.log('User Input:', userInput);
-      console.log('Old Items:', initialUsername.value);
-
       if (newPassword !== '') {
-        submit(userInput, initialUsername.value); //zum testen viielciht gleich alten usernamen rein schreiben
+        submit(userInput, initialUsername.value);
       }
     };
 
     const submit = async (userData, oldUsername) => {
       try {
-        const backendUrl = `http://localhost:8081/updateUser`;
-
+        const backendUrl = `http://localhost:8081/updateUser/${oldUsername}?password=${userData.password}&role=${store.userRole}&firstname=${userData.firstname}&lastname=${userData.lastname}&salutation=${userData.salutation}&email=${userData.email}&country=${userData.country}&status=${true}&profilePicture=${null}&street=${userData.street}&hauseNumber=${userData.houseNumber}&flatNumber=${userData.flatNumber}&city=${userData.city}&postalcode=${userData.postalcode}&username=${userData.username}`;
         const accessToken = localStorage.getItem('access_token');
-        console.log(accessToken);
 
-        const response = await axios.put(backendUrl, {
-          name: oldUsername,
-          updatedUser: userData,
+        console.log(accessToken);
+        console.log(oldUsername);
+        console.log('Backend URL:', backendUrl);
+
+        const response = await axios.put(backendUrl, null, {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
+            'Authorization': `Bearer ${accessToken}`
+          }
         });
-        console.log(response);
-        const { message } = response.data;
-        console.log('Update Message:', message);
+        console.log('Update Message:', response.data);
+
+        //Token Update
+        try {
+          const backendUrlToken = 'http://localhost:8081/auth/token';
+
+          const responseToken = await axios.post(backendUrlToken, {
+            username: userData.username,
+            password: userData.password,
+          });
+
+          const token = responseToken.data.token;
+
+          localStorage.setItem('access_token', token);
+          const accessTokenNew = localStorage.getItem('access_token');
+          console.log('Token successful: ', accessTokenNew)
+        } catch (err) {
+        console.error('Token not successful:', err);
+      }
+        
+
+        successAlertMessage.value = response.data;
+        showSuccessAlert.value = true;
       } catch (err) {
         console.error('Update not successful:', err);
         alertMessage.value = 'Update not successful';
@@ -199,11 +221,23 @@ export default {
 
 
 
-    return { store, items, saveChanges, showDismissibleAlert, alertMessage, submit };
+    return {
+      store,
+      items,
+      saveChanges,
+      showDismissibleAlert,
+      alertMessage,
+      submit,
+      showSuccessAlert,
+      successAlertMessage,
+    };
   },
   methods: {
     dismissAlert() {
       this.showDismissibleAlert = false;
+    },
+    dismissSuccessAlert() {
+      this.showSuccessAlert = false;
     },
   }
 };
