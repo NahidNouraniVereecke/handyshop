@@ -1,4 +1,19 @@
 <template>
+  
+  <div class="container-xl px-4 mt-4">
+      <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ alertMessage }}
+        <b-button variant="danger" type="button" class="close" @click="dismissAlert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </b-button>
+      </div>
+      <div v-if="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ successAlertMessage }}
+        <b-button variant="success" type="button" class="close" @click="dismissSuccessAlert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </b-button>
+      </div>
+  
     <div class="container">
       <div class="registration-form">
         <h2>Registrieren</h2>
@@ -45,8 +60,8 @@
             </div>
   
             <div class="form-field">
-              <label for="adresse">Adresse</label>
-              <label class="small mb-1" for="inputStreet">Streetname</label>
+              
+              <label class="small mb-1" for="inputStreet">Street</label>
                   <input class="form-control" id="inputStreet" type="text" placeholder="Enter your Streetname" v-model="store.street">
             </div>
             <div>
@@ -81,6 +96,7 @@
         </form>
       </div>
     </div>
+    </div>
   </template>
  <script>
  import { useUserStore } from '@/store/user.js';
@@ -92,7 +108,7 @@
     const store = useUserStore();
     const showDismissibleAlert = ref(false);
     const alertMessage = ref('');
-    const showSuccessAlert = ref(false);
+    const showSuccessAlert = ref('');
     const successAlertMessage = ref('');
 
     const saveChanges = async () => {
