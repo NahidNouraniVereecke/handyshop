@@ -1,19 +1,17 @@
 <template>
   <div class="container">
-    <div class="registration-form">
+    <div class="registeration-form">
       <TitleAtom :text="'Registrieren'" />
       <form @submit.prevent="submitForm">
         <div class="container-fluid">
+      
           
-          <FormField :fieldId="'vorname'" :fieldLabel="'Vorname'" :fieldType="'text'" :value="formData.vorname" @input="updateFormData('vorname', $event)" :fieldPlaceholder="'Jane'" :isRequired="true" />
-          <FehlerMeldungAtom :error="vornameErrorMessage" />
-          
-          <FormField :fieldId="'nachname'" :fieldLabel="'Nachname'" :fieldType="'text'" :value="formData.nachname" @input="updateFormData('nachname', $event)" :fieldPlaceholder="'Smith'" :isRequired="true" />
-          <FehlerMeldungAtom :error="nachnameErrorMessage" />
-          
-          <FormField :fieldId="'username'" :fieldLabel="'Username'" :fieldType="'text'" :value="formData.username" @input="updateFormData('username', $event)" :fieldPlaceholder="'exampleUser123'" :isRequired="true" />
-          <FehlerMeldungAtom :errorMessage="usernameErrorMessage" />
-          
+          <FormField :fieldId="'vorname'" :fieldLabel="'Vorname'" :fieldType="'text'" :value="formData.vorname" @input="formData.vorname = $event" :fieldPlaceholder="'Jane'" :isRequired="true" />
+
+          <FormField :fieldId="'nachname'" :fieldLabel="'Nachname'" :fieldType="'text'" :value="formData.nachname" @input="formData.nachname = $event" :fieldPlaceholder="'Smith'" :isRequired="true" />
+
+          <FormField :fieldId="'username'" :fieldLabel="'Username'" :fieldType="'text'" :value="formData.username" @input="formData.username = $event" :fieldPlaceholder="'exampleUser123'" :isRequired="true" />
+
           <FormField :fieldId="'email'" :fieldLabel="'E-Mail'" :fieldType="'email'" :value="formData.email" @input="formData.email = $event" :fieldPlaceholder="'example@mail.com'" :isRequired="true" />
 
           <FormField :fieldId="'password'" :fieldLabel="'Passwort'" :fieldType="'password'" :value="formData.password" @input="formData.password = $event" :fieldPlaceholder="''" :isRequired="true" />
@@ -29,11 +27,11 @@
           <CheckboxField :id="'agree'" :label="'Ich akzeptiere die Nutzungsbedingungen.'" :value="formData.agree" @input="formData.agree = $event" :required="true" />
 
           <div>
-            <ButtonAtom @click="submitForm">Registrieren</ButtonAtom>
+          <ButtonAtom>Registrieren</ButtonAtom>
           </div>
           <div>
-            <LinkAtom url="/login">Schon registriert? Hier geht es zur Login!</LinkAtom>
-          </div>
+          <LinkAtom url="/login">Schon registriert?Hier geht es zur Login!</LinkAtom>
+      </div>
         </div>
       </form>
     </div>
@@ -41,12 +39,12 @@
 </template>
 
 <script>
+import axios from 'axios';
 import CheckboxField from "@/components/molecules/CheckboxField.vue";
 import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
 import FormField from "@/components/molecules/FormField.vue";
 import LinkAtom from "@/components/atoms/LinkAtom.vue";
 import TitleAtom from "@/components/atoms/TitleAtom.vue";
-import FehlerMeldungAtom from "@/components/atoms/FehlerMeldungAtom.vue";
 
 export default {
   components: {
@@ -55,7 +53,6 @@ export default {
     FormField,
     LinkAtom,
     TitleAtom,
-    FehlerMeldungAtom
   },
   data() {
     return {
@@ -71,59 +68,24 @@ export default {
         ort: "",
         agree: false,
       },
-      vornameErrorMessage: null,
-      nachnameErrorMessage: null,
-      usernameErrorMessage: null,
     };
   },
   methods: {
-    validateField(fieldName, errorMessageProp) {
-  const value = this.formData[fieldName];
-  if (!value) {
-    this[errorMessageProp] = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} darf nicht leer sein.`;
-    console.log(`Error message for ${fieldName}:`, this[errorMessageProp]); // Add this line
-    return false;
-  } else {
-    this[errorMessageProp] = null;
-    return true;
-  }
-},
+    async submitForm() {
+      try {
+        // HTTP-Anfrage an den Spring Boot-Backend-Endpunkt senden
+        const response = await axios.post('http://localhost:8081/register', this.formData);
 
-
-    validateVorname() {
-      return this.validateField('vorname', 'vornameErrorMessage');
-    },
-
-    validateNachname() {
-      return this.validateField('nachname', 'nachnameErrorMessage');
-    },
-
-    validateUsername() {
-      return this.validateField('username', 'usernameErrorMessage');
-    },
-
-    // ... (other validation methods)
-
-    submitForm() {
-      if (
-        this.validateVorname() &&
-        this.validateNachname() &&
-        this.validateUsername() &&
-        // ... (call other field validations)
-        true
-      ) {
-        console.log("Form data submitted:", this.formData);
-        // Now you can proceed with your form submission logic
-      } else {
-        // Validation failed, handle accordingly
+        // Antwort auswerten, hier könntest du weiterleiten oder Erfolgsmeldungen anzeigen
+        console.log('Erfolgreich registriert:', response.data);
+      } catch (error) {
+        // Fehler behandeln, hier könntest du Fehlermeldungen anzeigen
+        console.error('Fehler beim Registrieren:', error);
       }
     },
-    // ... (other methods)
   },
 };
 </script>
-
-
 <style scoped>
 #app {
 display: flex;
