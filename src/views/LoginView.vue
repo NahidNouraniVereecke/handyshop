@@ -138,8 +138,6 @@ export default {
         console.log(username);
 
         const backendUrl2 = 'http://localhost:8081/users/username/';
-
-
         try{
           const response = await axios.get(`${backendUrl2}${username}`, {
             headers: {
