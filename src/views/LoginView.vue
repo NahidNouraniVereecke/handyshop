@@ -37,13 +37,7 @@
                 <p class="error-message" v-if="!!form.errors.password">{{ form.errors.password }}</p>
               </div>
               <div>
-                <CheckboxField :id="rememberMeId" :label="'Remember login information'" />
-              </div>
-              <div>
                 <button type="submit">Login</button>
-              </div>
-              <div>
-                <LinkAtom href="#">Forgot your Password?</LinkAtom>
               </div>
               <div>
                 <LinkAtom href="/register">New here? Register here!</LinkAtom>
@@ -61,7 +55,6 @@
 import axios from 'axios';
 import { object, string } from 'yup';
 import LinkAtom from '@/components/atoms/LinkAtom';
-import CheckboxField from '@/components/molecules/CheckboxField';
 import TitleAtom from '@/components/atoms/TitleAtom.vue';
 import {useUserStore} from '@/store/user.js';
 
@@ -74,7 +67,6 @@ export default {
   name: 'LoginView',
   components: {
     LinkAtom,
-    CheckboxField,
     TitleAtom,
   },
   data() {

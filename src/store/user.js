@@ -10,13 +10,13 @@ export const useUserStore = defineStore('user', {
             lastname: '',
             salutation: '',
             email: '',
+            countryCode: '',
+            postalCode: '',
+            city: '',
             street: '',
-            hauseNumber: '',
-            flatNumber: '',
-            city:'',
-            postalcode:'',
-            country:'',
-            profilPicture:''
+            houseNumber: '',
+            profilPicture:'',
+            otherinfo: ''
 
         }
     },
@@ -31,7 +31,7 @@ export const useUserStore = defineStore('user', {
                           'Authorization': `Bearer ${accessToken}`,
                         },
                       });
-                    
+                     
     
                     if(response.data){
                         const user = response.data;
@@ -41,13 +41,14 @@ export const useUserStore = defineStore('user', {
                         this.lastname = user.lastname;
                         this.salutation = user.salutation;
                         this.email = user.email;
+                        this.countryCode = user.countryCode;
+                        this.postalCode = user.postalCode;
                         this.street = user.street;
-                        this.hauseNumber = user.hauseNumber;
-                        this.flatNumber = user.flatNumber;
                         this.city = user.city;
-                        this.postalcode = user.postalcode;
-                        this.country = user.country;
+                        this.street = user.street;
+                        this.houseNumber = user.houseNumber;
                         this.profilPicture = user.profilPicture;
+                        this.otherinfo = user.otherinfo;
                         
                     }else{
                         console.error('Ungültiges Datenformat in der API-Antwort.');
@@ -66,13 +67,14 @@ export const useUserStore = defineStore('user', {
             this.lastname = user.lastname;
             this.salutation = user.salutation;
             this.email = user.email;
+            this.countryCode = user.countryCode;
+            this.postalCode = user.postalCode;
             this.street = user.street;
-            this.hauseNumber = user.hauseNumber;
-            this.flatNumber = user.flatNumber;
             this.city = user.city;
-            this.postalcode = user.postalcode;
-            this.country = user.country;
+            this.street = user.street;
+            this.houseNumber = user.houseNumber;
             this.profilPicture = user.profilPicture;
+            this.otherinfo = user.otherinfo;
 
         },
         clearUserInfo(){
@@ -82,13 +84,14 @@ export const useUserStore = defineStore('user', {
             this.lastname = '';
             this.salutation = '';
             this.email = '';
+            this.countryCode = '';
+            this.postalCode = '';
             this.street = '';
-            this.hauseNumber = '';
-            this.flatNumber = '';
             this.city = '';
-            this.postalcode = '';
-            this.country = '';
+            this.street = '';
+            this.houseNumber = '';
             this.profilPicture = '';
+            this.otherinfo = '';
         }
     },
     getters:{
