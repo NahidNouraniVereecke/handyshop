@@ -31,7 +31,7 @@
               </div>
               <div class="mb-3">
   <label for="imageUpload" class="form-label">Upload Image</label>
-  <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload">
+  <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload" accept="image/*">
 </div>
               <!-- Form Row -->
               <div class="row gx-3 mb-3">
@@ -446,7 +446,7 @@ export default {
           formData.append('image', imageFile.value);
 
           // Replace with your backend URL for image upload
-          const uploadUrl = 'http://localhost:8081/uploadImage/michi';
+          const uploadUrl = 'http://localhost:8081/uploadImage/'+store.username;
           const response = await axios.post(uploadUrl, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
