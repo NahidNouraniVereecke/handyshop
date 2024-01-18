@@ -447,7 +447,7 @@ export default {
         console.log(localStorage.getItem('username'));
 
         store.clearUserInfo;
-        router.push({ name: 'logout' });
+        router.push({ name: 'home' });
         
       
     })
