@@ -29,6 +29,10 @@
                 <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
                 <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" v-model="store.username">
               </div>
+              <div class="mb-3">
+  <label for="imageUpload" class="form-label">Upload Image</label>
+  <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload" accept="image/*">
+</div>
               <!-- Form Row -->
               <div class="row gx-3 mb-3">
                 <!-- Form Group (salutation) -->
@@ -381,6 +385,7 @@ import axios from 'axios';
 
 export default {
   setup() {
+    const imageFile = ref(null)
     const store = useUserStore();
     const initialUsername = ref(store.username);
     const showDismissibleAlert = ref(false);
@@ -402,9 +407,11 @@ export default {
         password: store.password,
       },
     ];
-
-    const saveChanges = () => {
-      const inputPassword = document.getElementById('inputPassword').value;
+    const handleFileUpload = event => {
+      imageFile.value = event.target.files[0];
+    };
+    const saveChanges = async () => {
+            const inputPassword = document.getElementById('inputPassword').value;
       const inputPasswordAgain = document.getElementById('inputPasswordAgain').value;
       let newPassword = '';
 
@@ -433,7 +440,26 @@ export default {
       if (newPassword !== '') {
         submit(userInput, initialUsername.value);
       }
+      if (imageFile.value) {
+        try {
+          const formData = new FormData();
+          formData.append('image', imageFile.value);
 
+          // Replace with your backend URL for image upload
+          const uploadUrl = 'http://localhost:8081/uploadImage/'+store.username;
+          const response = await axios.post(uploadUrl, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          // Handle response here
+          console.log('Image upload response:', response.data);
+        } catch (err) {
+          console.error('Image upload failed:', err);
+        }
+      }
       
     };
 
@@ -496,6 +522,7 @@ export default {
       submit,
       showSuccessAlert,
       successAlertMessage,
+      handleFileUpload,
     };
   },
   methods: {
