@@ -4,9 +4,11 @@
       <router-link to="/" class="navbar-brand">Home</router-link>
       <router-link to="/products" class="nav-link mb-2">Products</router-link>
       <router-link v-if="shouldShowLink('editUser')" to="/editProfile" class="nav-link mb-2">Your profile</router-link>
-      <router-link v-if="shouldShowLink('editProducts')" to="/productMang" class="nav-link mb-2">Edit Products</router-link>
+      <router-link v-if="shouldShowLink('editProducts')" to="/productMang" class="nav-link mb-2">Edit Phones</router-link>
       <router-link v-if="shouldShowLink('shoppingCart')" to="/shoppingCart" class="nav-link mb-2">ShoppingCart</router-link>
       <router-link v-if="shouldShowLink('editUsers')" to="/userMang" class="nav-link b-2">Edit Users</router-link>
+      <router-link v-if="shouldShowLink('editBrands')" to="/brandManagement" class="nav-link b-2">Edit Brands</router-link>
+      <router-link v-if="shouldShowLink('editOrders')" to="/orderManagement" class="nav-link b-2">Edit Orders</router-link>
       <router-link to="/help" class="nav-link mb-2">HelpPage</router-link>
       <router-link to="/impressum" class="nav-link mb-2">Imprint</router-link>
 
@@ -56,6 +58,8 @@ export default {
           case 'editProducts':
           case 'editUsers':
           case 'logout':
+          case 'editBrands':
+          case 'editOrders':
             return true;
           default:
             return false;

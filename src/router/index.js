@@ -67,6 +67,16 @@ const routes = [
     path: '/impressum',
     name: 'Impressum',
     component: () => import( '../views/ImpressumView.vue'),
+  },
+  {
+    path: '/brandManagement',
+    name: 'brandManagement',
+    component: ()=> import('../views/BrandManagement.vue'),
+  },
+  {
+    path: '/orderManagement',
+    name: 'orderManagement',
+    component: () => import('../views/OrderManagement.vue'),
   }
 ]
 
