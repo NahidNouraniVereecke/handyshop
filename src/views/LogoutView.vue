@@ -1,7 +1,6 @@
 <template>
     <div id="app">
       <header class="header">
-        <HeaderAtom type="h1">Hier können Sie sich in der Zukunft ausloggen</HeaderAtom>
         <button @click="logout" class="logout-button">Logout</button>
       </header>
       <main>
