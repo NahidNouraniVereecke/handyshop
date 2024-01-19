@@ -9,13 +9,10 @@
       <router-link v-if="shouldShowLink('editUsers')" to="/userMang" class="nav-link b-2">Edit Users</router-link>
       <router-link v-if="shouldShowLink('editBrands')" to="/brandManagement" class="nav-link b-2">Edit Brands</router-link>
       <router-link v-if="shouldShowLink('editOrders')" to="/orderManagement" class="nav-link b-2">Edit Orders</router-link>
+      <router-link v-if="shouldShowLink('orderView')" to="/orderView" class="nav-link b-2">Orders</router-link>
       <router-link to="/help" class="nav-link mb-2">HelpPage</router-link>
       <router-link to="/impressum" class="nav-link mb-2">Imprint</router-link>
 
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-      </div>
 
       <div class="ms-auto">
         <router-link v-if="shouldShowLink('login')" to="/login" class="nav-link">Login</router-link>
@@ -46,6 +43,7 @@ export default {
           case 'editUser':
           case 'shoppingCart':
           case 'logout':
+          case 'orderView':
             return true;
           default:
             return false;

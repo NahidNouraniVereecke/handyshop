@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="container">
       <header class="header text-center">
-        <h1>Order Management</h1>
+        <h1>Your Orders</h1>
       </header>
       <main>
         <div class="row mt-4">
@@ -13,7 +13,7 @@
           <div v-for="order in filteredOrders" :key="order.id" class="col-md-4 mb-3">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Order by: {{ order.user.username }}</h5>
+                <strong>Order from:</strong> {{ formatDateTime(order.createdOn) }}<br>
                 <p class="card-text">
                   <strong>Phones:</strong>
                   <ul>
@@ -22,10 +22,8 @@
                     </li>
                   </ul>
                   <strong>Total Amount:</strong> {{ formatPrice(calculateTotalAmount(order.phones)) }}<br>
-                  <strong>Created On:</strong> {{ formatDateTime(order.createdOn) }}<br>
-                  <strong>Created By:</strong> {{ order.user.username }}
                 </p>
-                <button @click="editOrder(order)" class="btn btn-primary btn-sm">Edit</button>
+                <button @click="editOrder(order)" class="btn btn-primary btn-sm">Details</button>
               </div>
             </div>
           </div>
@@ -63,7 +61,8 @@
     methods: {
       async fetchOrders() {
         try {
-          const response = await axios.get('http://localhost:8081/orders', {
+            const backendUrl = 'http://localhost:8081/orders/' + localStorage.getItem('username');
+          const response = await axios.get(backendUrl, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
             },

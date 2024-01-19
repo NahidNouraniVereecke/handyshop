@@ -77,6 +77,11 @@ const routes = [
     path: '/orderManagement',
     name: 'orderManagement',
     component: () => import('../views/OrderManagement.vue'),
+  },
+  {
+    path: '/orderView',
+    name: 'orderView',
+    component: () => import('../views/OrderView.vue'),
   }
 ]
 
