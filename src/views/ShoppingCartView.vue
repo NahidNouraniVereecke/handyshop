@@ -10,7 +10,7 @@
               <div>
                 <h5 class="mb-1">{{ item.title }} (x{{ item.quantity }})</h5>
                 <p class="mb-1">{{ item.shortDescription }}</p>
-                <small>Price: ${{ item.price }} each</small>
+                <small>Price: {{ formatPrice(item.price) }}€ each</small>
               </div>
               <div>
                 <b-button variant="warning" @click="changeQuantity(item, -1)" :disabled="item.quantity <= 1">-</b-button>
@@ -20,8 +20,8 @@
           </b-list-group>
 
           <div class="mt-3">
-            <h4>Total Price: ${{ totalPrice }}</h4>
-            <b-button variant="primary" class="mr-2">Checkout</b-button>
+            <h4>Total Price: {{ formatPrice(totalPrice) }}€</h4>
+            <b-button variant="primary" class="mr-2" @click="checkOut">Checkout</b-button>
             <b-button variant="danger" @click="clearCart">Clear Cart</b-button>
           </div>
         </div>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -80,9 +82,47 @@ export default {
       this.cart = [];
       sessionStorage.removeItem('cart');
     },
+    formatPrice(price) {
+        return Number(price).toFixed(2);
+      },
     updateSessionStorage() {
       sessionStorage.setItem('cart', JSON.stringify(this.cart));
-    }
+    },
+    checkOut() {
+      // Retrieve the cart array from sessionStorage
+      const cart = JSON.parse(sessionStorage.getItem('cart'));
+
+      console.log(cart);
+
+      // Create an array that includes each ID multiple times based on item quantity
+      const idsArray = cart.flatMap(item => Array(item.quantity).fill(item.id));
+
+      console.log(idsArray);
+
+      this.createOrder(idsArray);
+    },
+
+    async createOrder(uniqueIdsArray) {
+      const username = localStorage.getItem('username'); 
+      const apiUrl = `http://localhost:8081/createOrder/${username}`;
+      const accessToken = localStorage.getItem('access_token');
+
+      try {
+        const response = await axios.post(apiUrl, uniqueIdsArray, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        console.log('Order created successfully:', response.data);
+        sessionStorage.removeItem('cart');
+        this.$router.push({ name: 'orderView' });
+      } catch (error) {
+        console.error('Error creating order:', error);
+      }
+    },
+
   }
 };
 </script>

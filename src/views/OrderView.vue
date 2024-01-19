@@ -18,12 +18,12 @@
                   <strong>Phones:</strong>
                   <ul>
                     <li v-for="phone in order.phones" :key="phone.id">
-                      {{ phone.name }} - Price: {{ formatPrice(phone.price) }}
+                      {{ phone.name }} - Price: {{ formatPrice(phone.price) }}€
                     </li>
                   </ul>
-                  <strong>Total Amount:</strong> {{ formatPrice(calculateTotalAmount(order.phones)) }}<br>
+                  <strong>Total Amount:</strong> {{ formatPrice(calculateTotalAmount(order.phones)) }}€<br>
                 </p>
-                <button @click="editOrder(order)" class="btn btn-primary btn-sm">Details</button>
+                <button @click="editOrder(order)" class="btn btn-primary btn-sm">Detail</button>
               </div>
             </div>
           </div>
@@ -73,10 +73,11 @@
         }
       },
       searchOrders() {
-        // Triggered when the search term changes
+        
       },
       editOrder(order) {
-        console.log('Editing order:', order);
+        localStorage.setItem('orderId', order.id);
+        this.$router.push({ name: 'editOrder' });
       },
       formatDateTime(dateTime) {
         return new Date(dateTime).toLocaleString();
