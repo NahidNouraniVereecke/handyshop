@@ -67,9 +67,12 @@ const routes = [
     path: '/impressum',
     name: 'Impressum',
     component: () => import( '../views/ImpressumView.vue'),
-  }
+  },{
+    path: '/addProduct',
+    name: 'addProduct',
+    component: () => import('../views/AddProductView.vue'),
+  },
 ]
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes

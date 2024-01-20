@@ -1,100 +1,98 @@
 <template>
-  <div class="container-xl px-4 mt-4">
-    <div>
-      <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ alertMessage }}
-        <b-button variant="danger" type="button" class="close" @click="dismissAlert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </b-button>
-      </div>
-      <div v-if="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ successAlertMessage }}
-        <b-button variant="success" type="button" class="close" @click="dismissSuccessAlert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </b-button>
-      </div>
+  <div class="container">
+    <!-- Alert messages -->
+    <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ alertMessage }}
     </div>
-    
-
-    <!-- Account page navigation -->
-    <h1>Edit your User Information</h1>
-    <hr class="mt-0 mb-4">
-        <!-- Account details card -->
-        <div class="card mb-4">
-          <div class="card-header">Account Details</div>
-          <div class="card-body">
-            <form>
-              <!-- Form Group (username) -->
-              <div class="mb-3">
-                <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
-                <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" v-model="store.username">
-              </div>
-              <div class="mb-3">
-  <label for="imageUpload" class="form-label">Upload Image</label>
-  <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload" accept="image/*">
-</div>
-              <!-- Form Row -->
-              <div class="row gx-3 mb-3">
-                <!-- Form Group (salutation) -->
-                <div class="col-md-4">
-                  <label class="small mb-1" for="inputSalutation">Salutation</label>
-                  <select class="form-control" id="inputSalutation" v-model="store.salutation">
-                    <option value="MR" :selected="store.salutation === 'MR'">MR</option>
-                    <option value="MRS" :selected="store.salutation === 'MRS'">MRS</option>
-                    <option value="OTHER">OTHER</option>
-                    <!-- Dynamic option for OTHER based on user's selection -->
-                    <option v-if="store.salutation === 'OTHER'" :value="store.otherinfo" :selected="store.salutation === 'OTHER'">{{ store.otherinfo }}</option>
-                    <!-- Dynamic option for custom salutation based on user's selection -->
-                    <option v-if="store.salutation !== 'OTHER' && store.salutation !== 'MR' && store.salutation !== 'MRS'" :value="store.salutation" :selected="store.salutation !== 'OTHER'">{{ store.salutation }}</option>
-                  </select>
-                </div>
-
-                <div v-if="store.salutation === 'OTHER'" class="form-field">
+    <div v-if="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successAlertMessage }}
+    </div>
+    <div class="container">
+      <div class="editProfile">
+        <h2>Edit your User Information</h2>
+        <form>
+          <div class="container-fluid">
+            <div>
+              <label class="small mb-1" for="inputSalutation">Salutation</label>
+              <select class="form-control" id="inputSalutation" v-model="store.salutation">
+                <option value="MR" :selected="store.salutation === 'MR'">MR</option>
+                <option value="MRS" :selected="store.salutation === 'MRS'">MRS</option>
+                <option value="OTHER" :selected="store.salutation === 'OTHER'">OTHER</option>
+              </select>
+              <div v-if="errors.salutation" class="error">{{ errors.salutation }}</div>
+            </div>
+            <div v-if="store.salutation === 'OTHER'" class="form-field">
               <label class="small mb-1" for="inputOtherDetails">Enter your personal salutation (max 30 characters)</label>
-              <input
-                class="form-control"
-                id="inputOtherDetails"
-                type="text"
-                placeholder="Salutation"
-                v-model="store.otherinfo"
-                maxlength="30"
-                />
-              </div>
-                <!-- Form Group (first name) -->
-                <div class="col-md-4">
-                  <label class="small mb-1" for="inputFirstName">First name</label>
-                  <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" v-model="store.firstname">
-                </div>
-                <!-- Form Group (last name) -->
-                <div class="col-md-4">
-                  <label class="small mb-1" for="inputLastName">Last name</label>
-                  <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" v-model="store.lastname">
-                </div>
-              </div>
-              <!-- Form Group (E-Mail) -->
-              <div class="mb-3">
-                <label class="small mb-1" for="inputEmail">E-Mail</label>
-                <input class="form-control" id="inputEmail" type="text" placeholder="Enter your E-Mail" v-model="store.email">
-              </div>
-              <!-- Password-->
-              <div class="row gx-3 mb-3">
-                <!-- Form Group (Password) -->
-                <div class="col-md-6">
-                  <label class="small mb-1" for="inputPassword">Password</label>
-                  <input class="form-control" id="inputPassword" type="password" placeholder="Enter your new Password">
-                </div>
-                <!-- Form Group (Password Again) -->
-                <div class="col-md-6">
-                  <label class="small mb-1" for="inputPasswordAgain">Password again</label>
-                  <input class="form-control" id="inputPasswordAgain" type="password" placeholder="Enter your new Password again">
-                </div>
-              </div>
-              
+              <input class="form-control" id="inputOtherDetails" type="text" placeholder="Salutation"
+                v-model="store.otherinfo" maxlength="30" />
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputFirstName">First name</label>
+              <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name"
+                v-model="store.firstname">
+              <div v-if="errors.firstname" class="error">{{ errors.firstname }}</div>
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputLastName">Last name</label>
+              <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name"
+                v-model="store.lastname">
+              <div v-if="errors.lastname" class="error">{{ errors.lastname }}</div>
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the
+                site)</label>
+              <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username"
+                v-model="store.username">
+              <div v-if="errors.username" class="error">{{ errors.username }}</div>
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputEmail">E-Mail</label>
+              <input class="form-control" id="inputEmail" type="text" placeholder="Enter your E-Mail"
+                v-model="store.email">
+              <div v-if="errors.email" class="error">{{ errors.email }}</div>
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputPassword">Password</label>
+              <input class="form-control" id="inputPassword" type="password" placeholder="Enter your new Password"
+                v-model="store.password">
+              <div v-if="errors.password" class="error">{{ errors.password }}</div>
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputPasswordAgain">Password again</label>
+              <input class="form-control" id="inputPasswordAgain" type="password"
+                placeholder="Enter your new Password again" v-model="store.passwordConfirm">
+              <div v-if="errors.passwordConfirm" class="error">{{ errors.passwordConfirm }}</div>
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputStreet">Streetname</label>
+              <input class="form-control" id="inputStreet" type="text" placeholder="Enter your Streetname"
+                v-model="store.street">
+              <div v-if="errors.street" class="error">{{ errors.street }}</div>
+            </div>
 
-              <!-- ADRESS BLOCK-->
-              <div class="row gx-3 mb-3">
-                <!-- Form Group (Country) -->
-                <div>
+            <div class="form-field">
+              <label class="small mb-1" for="inputHouseNumber">House Number</label>
+              <input class="form-control" id="inputHouseNumber" type="text" placeholder="Enter your House Number"
+                v-model="store.houseNumber">
+              <div v-if="errors.houseNumber" class="error">{{ errors.houseNumber }}</div>
+            </div>
+
+            <div class="form-field">
+              <label class="small mb-1" for="inputCity">City</label>
+              <input class="form-control" id="inputCity" type="text" placeholder="Enter your City" v-model="store.city">
+              <div v-if="errors.city" class="error">{{ errors.city }}</div>
+            </div>
+
+            <div class="form-field">
+              <label class="small mb-1" for="inputPostalcode">Postalcode</label>
+              <input class="form-control" id="inputPostalcode" type="text" placeholder="Enter your Postalcode"
+                v-model="store.postalCode">
+              <div v-if="errors.postalCode" class="error">{{ errors.postalCode }}</div>
+            </div>
+
+
+
+            <div>
               <label class="small mb-1" for="inpputCountry">Country</label>
               <select class="form-control" id="inputCountry" v-model="store.countryCode">
                 <option value="" selected disabled hidden>Choose Country</option>
@@ -230,7 +228,8 @@
                 <option value="LT" :selected="store.countryCode === 'LT'">Lithuania</option>
                 <option value="LU" :selected="store.countryCode === 'LU'">Luxembourg</option>
                 <option value="MO" :selected="store.countryCode === 'MO'">Macao</option>
-                <option value="MK" :selected="store.countryCode === 'MK'">Macedonia, the former Yugoslav Republic of</option>
+                <option value="MK" :selected="store.countryCode === 'MK'">Macedonia, the former Yugoslav Republic of
+                </option>
                 <option value="MG" :selected="store.countryCode === 'MG'">Madagascar</option>
                 <option value="MW" :selected="store.countryCode === 'MW'">Malawi</option>
                 <option value="MY" :selected="store.countryCode === 'MY'">Malaysia</option>
@@ -284,7 +283,8 @@
                 <option value="RU" :selected="store.countryCode === 'RU'">Russian Federation</option>
                 <option value="RW" :selected="store.countryCode === 'RW'">Rwanda</option>
                 <option value="BL" :selected="store.countryCode === 'BL'">Saint Barth�lemy</option>
-                <option value="SH" :selected="store.countryCode === 'SH'">Saint Helena, Ascension and Tristan da Cunha</option>
+                <option value="SH" :selected="store.countryCode === 'SH'">Saint Helena, Ascension and Tristan da Cunha
+                </option>
                 <option value="KN" :selected="store.countryCode === 'KN'">Saint Kitts and Nevis</option>
                 <option value="LC" :selected="store.countryCode === 'LC'">Saint Lucia</option>
                 <option value="MF" :selected="store.countryCode === 'MF'">Saint Martin (French part)</option>
@@ -305,7 +305,8 @@
                 <option value="SB" :selected="store.countryCode === 'SB'">Solomon Islands</option>
                 <option value="SO" :selected="store.countryCode === 'SO'">Somalia</option>
                 <option value="ZA" :selected="store.countryCode === 'ZA'">South Africa</option>
-                <option value="GS" :selected="store.countryCode === 'GS'">South Georgia and the South Sandwich Islands</option>
+                <option value="GS" :selected="store.countryCode === 'GS'">South Georgia and the South Sandwich Islands
+                </option>
                 <option value="SS" :selected="store.countryCode === 'SS'">South Sudan</option>
                 <option value="ES" :selected="store.countryCode === 'ES'">Spain</option>
                 <option value="LK" :selected="store.countryCode === 'LK'">Sri Lanka</option>
@@ -348,40 +349,26 @@
                 <option value="ZM" :selected="store.countryCode === 'ZM'">Zambia</option>
                 <option value="ZW" :selected="store.countryCode === 'ZW'">Zimbabwe</option>
               </select>
+              <div v-if="errors.country" class="error">{{ errors.country }}</div>
             </div>
-                <!-- Form Group (Streetname) -->
-                <div class="col-md-2">
-                  <label class="small mb-1" for="inputStreet">Streetname</label>
-                  <input class="form-control" id="inputStreet" type="text" placeholder="Enter your Streetname" v-model="store.street">
-                </div>
-                <!-- Form Group (House Number) -->
-                <div class="col-md-2">
-                  <label class="small mb-1" for="inputHouseNumber">House Number</label>
-                  <input class="form-control" id="inputHouseNumber" type="text" placeholder="Enter your House Number" v-model="store.houseNumber">
-                </div>
-                <!-- Form Group (City) -->
-                <div class="col-md-2">
-                  <label class="small mb-1" for="inputCity">City</label>
-                  <input class="form-control" id="inputCity" type="text" placeholder="Enter your City" v-model="store.city">
-                </div>
-                <!-- Form Group (Postalcode) -->
-                <div class="col-md-2">
-                  <label class="small mb-1" for="inputPostalcode">Postalcode</label>
-                  <input class="form-control" id="inputPostalcode" type="text" placeholder="Enter your Postalcode" v-model="store.postalCode">
-                </div>             
-              </div>
-              <!-- Save changes button -->
-              <button class="btn btn-primary" type="button" @click="saveChanges">Save changes</button>
-            </form>
+            <div class="input-field">
+              <label for="imageUpload" class="form-label">Upload Image</label>
+              <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload"
+                accept="image/*">
+            </div>
+            <button class="btn btn-primary" type="button" @click="saveChanges">Save changes</button>
           </div>
-        </div>
+        </form>
       </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { useUserStore } from '@/store/user.js';
 import { ref } from 'vue';
 import axios from 'axios';
+import * as Yup from 'yup';
 
 export default {
   setup() {
@@ -392,6 +379,13 @@ export default {
     const alertMessage = ref('');
     const showSuccessAlert = ref(false);
     const successAlertMessage = ref('');
+    const dismissAlertAfterDelay = (delay = 3000) => {
+      setTimeout(() => {
+        showDismissibleAlert.value = false;
+        showSuccessAlert.value = false;
+      }, delay);
+    };
+
     const items = [
       {
         username: store.username,
@@ -407,46 +401,86 @@ export default {
         password: store.password,
       },
     ];
+    const updateSchema = Yup.object().shape({
+      salutation: Yup.string().required('Salutation is required'),
+      firstname: Yup.string().required('Firstname is required'),
+      lastname: Yup.string().required('Lastname is required'),
+      email: Yup.string().email('Invalid email format').required('Email is required'),
+      username: Yup.string()
+        .min(5, 'Username must be at least 5 characters long')
+        .test('has-letter', 'Username must contain at least one letter', function (value) {
+          return /[a-zA-Z]/.test(value);
+        })
+        .required('Username is required'),
+      password: Yup.string()
+        .min(8, 'Password must be at least 8 characters long')
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])/, 'Password must contain at least one letter, one number, and one special character (@#$%^&+=!)')
+        .matches(/^[A-Za-z\d@#$%^&+=!]{8,}$/, 'Password must be 8 characters or more and contain at least one letter, one number, and one special character (@#$%^&+=!)')
+        .required('Password is required'),
+      passwordConfirm: Yup.string()
+        .oneOf([Yup.ref('password')], 'Passwords must match')
+        .required('Password confirmation is required'),
+      street: Yup.string().required('Street is required'),
+      houseNumber: Yup.string()
+        .matches(/^[0-9]+[A-Za-z]?$/, 'House number must be numbers followed by an optional letter')
+        .required('House number is required'),
+      postalCode: Yup.string()
+        .required('Postal code is required')
+        .matches(/^\d{4}$/, 'Postal code must be exactly 4 digits'),
+      city: Yup.string().required('City is required'),
+      country: Yup.string().required('Country is required'),
+
+    });
+
+    const errors = ref({
+      salutation: '',
+      firstname: '',
+      lastname: '',
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      street: '',
+      houseNumber: '',
+      postalCode: '',
+      city: '',
+      country: '',
+
+    });
     const handleFileUpload = event => {
       imageFile.value = event.target.files[0];
     };
     const saveChanges = async () => {
-            const inputPassword = document.getElementById('inputPassword').value;
-      const inputPasswordAgain = document.getElementById('inputPasswordAgain').value;
-      let newPassword = '';
+      Object.keys(errors.value).forEach(key => errors.value[key] = '');
+      let salutationValue = store.salutation === 'OTHER' ? store.otherinfo : store.salutation;
 
-      if (inputPassword === inputPasswordAgain && inputPassword !== '' && inputPasswordAgain !== '') {
-        newPassword = inputPassword;
-      } else {
-        alertMessage.value = 'Passwords don\'t match';
-        showDismissibleAlert.value = true;
-        return;
-      }
+      try {
+        const userInput = {
+          salutation: salutationValue,
+          firstname: store.firstname,
+          lastname: store.lastname,
+          username: store.username,
+          email: store.email,
+          password: store.password,
+          passwordConfirm: store.passwordConfirm,
+          street: store.street,
+          houseNumber: store.houseNumber,
+          postalCode: store.postalCode,
+          city: store.city,
+          country: store.countryCode,
+        };
 
-      const userInput = {
-        username: store.username,
-        salutation: store.salutation,
-        firstname: store.firstname,
-        lastname: store.lastname,
-        email: store.email,
-        password: newPassword,
-        countryCode: store.countryCode,
-        street: store.street,
-        houseNumber: store.houseNumber,
-        city: store.city,
-        postalCode: store.postalCode,
-      };
+        console.log('Validating user input', userInput);
+        await updateSchema.validate(userInput, { abortEarly: false });
+        console.log('Validation successful');
+        await submit(userInput, initialUsername.value);
+        console.log('User data submitted successfully');
 
-      if (newPassword !== '') {
-        submit(userInput, initialUsername.value);
-      }
-      if (imageFile.value) {
-        try {
+        // If submission is successful, proceed with image upload
+        if (imageFile.value) {
           const formData = new FormData();
           formData.append('image', imageFile.value);
-
-          // Replace with your backend URL for image upload
-          const uploadUrl = 'http://localhost:8081/uploadImage/'+store.username;
+          const uploadUrl = 'http://localhost:8081/uploadImage/' + store.username;
           const response = await axios.post(uploadUrl, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -454,20 +488,37 @@ export default {
             }
           });
 
-          // Handle response here
           console.log('Image upload response:', response.data);
-        } catch (err) {
-          console.error('Image upload failed:', err);
+
+        }
+        successAlertMessage.value = 'User information and image updated successfully!';
+        showSuccessAlert.value = true;
+
+        dismissAlertAfterDelay();
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          console.log('Validation error:', error);
+          error.inner.forEach(validationError => {
+            if (validationError.path in errors.value) {
+              errors.value[validationError.path] = validationError.message;
+            }
+          });
+        } else {
+          console.error('An error occurred:', error);
+          alertMessage.value = 'An error occurred while updating the information. Please try again.';
+          showDismissibleAlert.value = true;
+          dismissAlertAfterDelay();
+
         }
       }
-      
     };
 
     const submit = async (userData, oldUsername) => {
-
-      if(store.salutation === 'OTHER'){
-          userData.salutation = store.otherinfo;
-        }
+      console.log('submit - start', userData);
+      console.log('submit - end');
+      if (store.salutation === 'OTHER') {
+        userData.salutation = store.otherinfo;
+      }
       try {
         const backendUrl = `http://localhost:8081/updateUser/${oldUsername}?password=${userData.password}&role=${store.userRole}&firstname=${userData.firstname}&lastname=${userData.lastname}&salutation=${userData.salutation}&email=${userData.email}&countryCode=${userData.countryCode}&status=${true}&profilePicture=${null}&street=${userData.street}&houseNumber=${userData.houseNumber}&city=${userData.city}&postalCode=${userData.postalCode}&username=${userData.username}`;
         const accessToken = localStorage.getItem('access_token');
@@ -483,7 +534,7 @@ export default {
         });
         console.log('Update Message:', response.data);
 
-        //Token Update
+
         try {
           const backendUrlToken = 'http://localhost:8081/auth/token';
 
@@ -498,9 +549,9 @@ export default {
           const accessTokenNew = localStorage.getItem('access_token');
           console.log('Token successful: ', accessTokenNew)
         } catch (err) {
-        console.error('Token not successful:', err);
-      }
-        
+          console.error('Token not successful:', err);
+        }
+
 
         successAlertMessage.value = response.data;
         showSuccessAlert.value = true;
@@ -508,6 +559,7 @@ export default {
         console.error('Update not successful:', err);
         alertMessage.value = 'Update not successful';
         showDismissibleAlert.value = true;
+        dismissAlertAfterDelay();
       }
     };
 
@@ -523,6 +575,7 @@ export default {
       showSuccessAlert,
       successAlertMessage,
       handleFileUpload,
+      errors,
     };
   },
   methods: {
@@ -538,14 +591,15 @@ export default {
 
 
 <style scoped>
-.product-view {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 50px;
+.container {
+  width: 500px;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  
 }
 
-.header {
-  text-align: center;
+.error {
+  color: red;
 }
 </style>

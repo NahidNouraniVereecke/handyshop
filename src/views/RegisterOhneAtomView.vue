@@ -1,18 +1,13 @@
 <template>
   
-  <div class="container-xl px-4 mt-4">
-      <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ alertMessage }}
-        <b-button variant="danger" type="button" class="close" @click="dismissAlert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </b-button>
-      </div>
-      <div v-if="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ successAlertMessage }}
-        <b-button variant="success" type="button" class="close" @click="dismissSuccessAlert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </b-button>
-      </div>
+  <div class="container">
+  <!-- Alert messages -->
+  <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ alertMessage }}
+  </div>
+  <div v-if="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ successAlertMessage }}
+  </div>
   
     <div class="container">
       <div class="registration-form">
@@ -27,6 +22,7 @@
                     <option value="MRS" :selected="store.salutation === 'MRS'">MRS</option>
                     <option value="OTHER" :selected="store.salutation === 'OTHER'">OTHER</option>
                   </select>
+                  <div v-if="errors.salutation" class="error">{{ errors.salutation }}</div>
             </div>
 
             <div v-if="store.salutation === 'OTHER'" class="form-field">
@@ -44,54 +40,62 @@
             <div class="form-field">
                 <label class="small mb-1" for="inputFirstName">Firstname</label>
                 <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your firstname" v-model="store.firstname">
-            </div>
+                <div v-if="errors.firstname" class="error">{{ errors.firstname }}</div>
+              
+      </div>
             
             <div class="form-field">
                 <label class="small mb-1" for="inputLastName">Lastname</label>
                   <input class="form-control" id="inputLastName" type="text" placeholder="Enter your lastname" v-model="store.lastname">
+                  <div v-if="errors.lastname" class="error">{{ errors.lastname }}</div>
             </div>
             
             <div class="form-field">
                 <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
                 <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" v-model="store.username">
+                <div v-if="errors.username" class="error">{{ errors.username }}</div>
             </div>
-            
-            <!-- Other form fields -->
   
             <div class="form-field">
                 <label class="small mb-1" for="inputEmail">E-Mail</label>
                 <input class="form-control" id="inputEmail" type="text" placeholder="Enter your E-Mail" v-model="store.email">
+                <div v-if="errors.email" class="error">{{ errors.email }}</div>
             </div>
   
             <div class="form-field">
                 <label class="small mb-1" for="inputPassword">Password</label>
-                  <input class="form-control" id="inputPassword" type="password" placeholder="Enter your new Password">
+                  <input class="form-control" id="inputPassword" type="password" placeholder="Enter your new Password" v-model="store.password">
+                  <div v-if="errors.password" class="error">{{ errors.password }}</div>
             </div>
   
             <div class="form-field">
                 <label class="small mb-1" for="inputPasswordAgain">Password again</label>
-                  <input class="form-control" id="inputPasswordAgain" type="password" placeholder="Enter your new Password again">
+                  <input class="form-control" id="inputPasswordAgain" type="password" placeholder="Enter your new Password again" v-model="store.passwordConfirm">
+                  <div v-if="errors.passwordConfirm" class="error">{{ errors.passwordConfirm }}</div>
             </div>
   
             <div class="form-field">
-              
               <label class="small mb-1" for="inputStreet">Street</label>
                   <input class="form-control" id="inputStreet" type="text" placeholder="Enter your Street name" v-model="store.street">
+                  <div v-if="errors.street" class="error">{{ errors.street }}</div>
             </div>
             <div>
-                <label class="small mb-1" for="inputHauseNumber">Housenumber</label>
-                  <input class="form-control" id="inputHauseNumber" type="text" placeholder="Enter your Hause Number" v-model="store.houseNumber">
+                <label class="small mb-1" for="inputHouseNumber">Housenumber</label>
+                  <input class="form-control" id="inputHouseNumber" type="text" placeholder="Enter your House Number" v-model="store.houseNumber">
+                  <div v-if="errors.houseNumber" class="error">{{ errors.houseNumber }}</div>
             </div>
            
   
             <div class="form-field">
                 <label class="small mb-1" for="inputPostalcode">Postalcode</label>
                   <input class="form-control" id="inputPostalcode" type="text" placeholder="Enter your Postalcode" v-model="store.postalCode">
+                  <div v-if="errors.postalCode" class="error">{{ errors.postalCode}}</div>
             </div>
   
             <div class="form-field">
                 <label class="small mb-1" for="inputCity">City</label>
                   <input class="form-control" id="inputCity" type="text" placeholder="Enter your City" v-model="store.city">
+                  <div v-if="errors.city" class="error">{{ errors.city }}</div>
             </div>
 
             <div>
@@ -348,9 +352,14 @@
                 <option value="ZM" :selected="store.countryCode === 'ZM'">Zambia</option>
                 <option value="ZW" :selected="store.countryCode === 'ZW'">Zimbabwe</option>
               </select>
+              <div v-if="errors.country" class="error">{{ errors.country }}</div>
             </div>
-
-            <div>
+         <div>
+          <div class="checkbox">
+    <input type="checkbox" id="agree" v-model="privacyPolicyAccepted" required />
+    <label for="agree">Ich akzeptiere die Nutzungsbedingungen.</label>
+    <div v-if="errors.privacyPolicyAccepted" class="error">{{ errors.privacyPolicyAccepted }}</div>
+  </div>
                 <button class="btn btn-primary" type="button" @click="saveChanges">Register</button>
             </div>
             <div>
@@ -362,82 +371,152 @@
     </div>
     </div>
   </template>
- <script>
- import { useUserStore } from '@/store/user.js';
- import { ref } from 'vue';
- import axios from 'axios';
  
- export default {
-  setup() {
-    const store = useUserStore();
-    const showDismissibleAlert = ref(false);
-    const alertMessage = ref('');
-    const showSuccessAlert = ref('');
-    const successAlertMessage = ref('');
-    
-    const saveChanges = async () => {
-      const inputPassword = document.getElementById('inputPassword').value;
-      const inputPasswordAgain = document.getElementById('inputPasswordAgain').value;
-
-      if (inputPassword === inputPasswordAgain && inputPassword !== '' && inputPasswordAgain !== '') {
-        
-        const userInput = {
-          username: store.username,
-          salutation: store.salutation,
-          firstname: store.firstname,
-          lastname: store.lastname,
-          email: store.email,
-          password: inputPassword,
-          countryCode: store.countryCode,
-          street: store.street,
-          houseNumber: store.houseNumber,
-          city: store.city,
-          postalCode: store.postalCode,
-        };
-
-        if(store.salutation === 'OTHER'){
-          userInput.salutation = store.otherinfo;
-        }
-
-        try {
-  const registrationUrl = `http://localhost:8081/register?username=${userInput.username}&password=${userInput.password}&role=ROLE_user&firstname=${userInput.firstname}&lastname=${userInput.lastname}&salutation=${userInput.salutation}&email=${userInput.email}&countryCode=${userInput.countryCode}&postalCode=${userInput.postalCode}&city=${userInput.city}&street=${userInput.street}&houseNumber=${userInput.houseNumber}&profilePicture="null"&status=true`;
-
-  const response = await axios.post(registrationUrl, userInput);
-
   
-  if (response.status === 200) {
-    console.log(response.status);
-    console.log('Registration successful. Data saved in the database:', response.data);
-    successAlertMessage.value = 'Registration successful';
-    showSuccessAlert.value = true;
-    //window.location.reload();
-  } else {
-    console.error('Registration not successful:', response.data);
-    alertMessage.value = 'Registration not successful';
-    showDismissibleAlert.value = true;
-  }
-} catch (err) {
-  console.error('Registration not successful:', err);
-  console.log('Full response:', err.response); 
+  <script>
+  import { useUserStore } from '@/store/user.js';
+  import { ref } from 'vue';
+  import axios from 'axios';
+  import * as Yup from 'yup';
+  
+  export default {
+    setup() {
+      const store = useUserStore();
+      const userRole = ref("ROLE_user");
+      const showDismissibleAlert = ref(false);
+      const alertMessage = ref('');
+      const showSuccessAlert = ref(false);
+      const successAlertMessage = ref('');
+      const privacyPolicyAccepted = ref(false);
+      const dismissAlert = () => {
+  showDismissibleAlert.value = false;
+};
 
-  alertMessage.value = 'Registration not successful';
-  showDismissibleAlert.value = true;
-}
-
-
+const dismissSuccessAlert = () => {
+  showSuccessAlert.value = false;
+};
+const dismissAlertAfterDelay = (delay = 3000) => {
+  setTimeout(() => {
+    showDismissibleAlert.value = false;
+    showSuccessAlert.value = false;
+  }, delay);
+};
+  
+      const registrationSchema = Yup.object().shape({
+        salutation: Yup.string().required('Salutation is required'),
+        firstname: Yup.string().required('Firstname is required'),
+        lastname: Yup.string().required('Lastname is required'),
+        email: Yup.string().email('Invalid email format').required('Email is required'),
+        username: Yup.string()
+          .min(5, 'Username must be at least 5 characters long')
+          .test('has-letter', 'Username must contain at least one letter', function (value) {
+            return /[a-zA-Z]/.test(value);
+          })
+          .required('Username is required'),
+        password: Yup.string()
+          .min(8, 'Password must be at least 8 characters long')
+          .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])/, 'Password must contain at least one letter, one number, and one special character (@#$%^&+=!)')
+          .matches(/^[A-Za-z\d@#$%^&+=!]{8,}$/, 'Password must be 8 characters or more and contain at least one letter, one number, and one special character (@#$%^&+=!)')
+          .required('Password is required'),
+        passwordConfirm: Yup.string()
+          .oneOf([Yup.ref('password')], 'Passwords must match')
+          .required('Password confirmation is required'),
+        street: Yup.string().required('Street is required'),
+        houseNumber: Yup.string()
+          .matches(/^[0-9]+[A-Za-z]?$/, 'House number must be numbers followed by an optional letter')
+          .required('House number is required'),
+        postalCode: Yup.string()
+          .required('Postal code is required')
+          .matches(/^\d{4}$/, 'Postal code must be exactly 4 digits'),
+        city: Yup.string().required('City is required'),
+        country: Yup.string().required('Country is required'),
+        privacyPolicyAccepted: Yup.boolean()
+          .oneOf([true], 'You must accept the privacy policy') 
+          .required('You must accept the privacy policy'), 
+      });
+  
+      const errors = ref({
+        salutation: '',
+        firstname: '',
+        lastname: '',
+        username: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        street: '',
+        houseNumber: '',
+        postalCode: '',
+        city: '',
+        country: '',
+        privacyPolicyAccepted: '', 
+      });
+  
+      const saveChanges = async () => {
+        
+        Object.keys(errors.value).forEach(key => errors.value[key] = '');
+  
+        try {
+          let salutationValue = store.salutation === 'OTHER' ? store.otherinfo : store.salutation;
+          const userInput = {
+            salutation: salutationValue,
+            firstname: store.firstname,
+            lastname: store.lastname,
+            username: store.username,
+            email: store.email,
+            password: store.password,
+            passwordConfirm: store.passwordConfirm,
+            street: store.street,
+            houseNumber: store.houseNumber,
+            postalCode: store.postalCode,
+            city: store.city,
+            country: store.countryCode,
+            privacyPolicyAccepted: privacyPolicyAccepted.value,
+          };
+  
+          await registrationSchema.validate(userInput, { abortEarly: false });
+  
+          if (!privacyPolicyAccepted.value) {
+            errors.value.privacyPolicyAccepted = 'You must accept the privacy policy';
+            return;
+          }
+  
+          const url = `/register?username=${userInput.username}&password=${userInput.password}&role=${userRole.value}&firstname=${userInput.firstname}&lastname=${userInput.lastname}&salutation=${userInput.salutation}&email=${userInput.email}&countryCode=${userInput.country}&status=true&profilePicture=null&street=${userInput.street}&houseNumber=${userInput.houseNumber}&city=${userInput.city}&postalCode=${userInput.postalCode}`;
+  
+          const response = await axios.post(`http://localhost:8081${url}`, userInput);
+  
+          if (response.status === 200 || response.status === 201) { // Check for 201 status as well
+      console.log('Registration successful'); // Log success for debugging
+      successAlertMessage.value = 'Registration successful';
+      showSuccessAlert.value = true;
+      dismissAlertAfterDelay();}
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      // Handle frontend validation errors
+      error.inner.forEach(validationError => {
+        if (validationError.path in errors.value) {
+          errors.value[validationError.path] = validationError.message;
+        }
+      });
+    } else if (error.response && error.response.status === 400) {
+      const errorMessages = error.response.data;
+      if (errorMessages.includes('Username is already taken')) {
+        alertMessage.value = 'Username already exists';
+      } else if (errorMessages.includes('Email is already taken')) {
+        alertMessage.value = 'Email already exists';
       } else {
-        alertMessage.value = 'Passwords don\'t match';
-        showDismissibleAlert.value = true;
+        alertMessage.value = errorMessages.join(' '); // Join all messages with a space
       }
-    };
+      showDismissibleAlert.value = true;
+    dismissAlertAfterDelay();
+    } else {
+      
+      console.error('Unexpected Error: ', error);
+      alertMessage.value = 'An unexpected error occurred. Please try again.';
+      showDismissibleAlert.value = true;
+    }
+  }
+};
 
-    const dismissAlert = () => {
-      showDismissibleAlert.value = false;
-    };
-
-    const dismissSuccessAlert = () => {
-      showSuccessAlert.value = false;
-    };
 
     return {
       store,
@@ -448,22 +527,26 @@
       showSuccessAlert,
       successAlertMessage,
       dismissSuccessAlert,
+      privacyPolicyAccepted,
+      errors,
     };
   },
 };
 </script>
   
   
-  <style scoped>
-  .product-view {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: 50px;
-  }
-  
 
-  .header {
-    text-align: center;
-  }
+  
+  <style scoped>
+  
+.container {
+  width: 500px; 
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+  .error {
+  color: red;
+}
   </style>
+ 
