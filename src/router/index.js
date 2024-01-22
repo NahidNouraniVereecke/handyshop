@@ -29,14 +29,44 @@ const routes = [
     component: () => import('../views/HelpView.vue')
   },
   {
+    path: '/access-denied',
+    name: 'access-denied',
+    component: () => import( '../views/AccessDenied.vue')
+  },
+  {
     path: '/register',
     name: 'register',
-    component: () => import('../views/RegisterView.vue')
+    component: () => import('../views/RegisterOhneAtomView.vue')
+  },
+  {
+    path: '/editProfile',
+    name: 'editProfile',
+    component: () => import( '../views/EditProfile.vue')
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: () => import( '../views/LogoutView.vue'),
+  },
+  {
+    path: '/productMang',
+    name: 'productMang',
+    component: () => import( '../views/ProductManagement.vue'),
+  },
+  {
+    path: '/shoppingCart',
+    name: 'shoppingCart',
+    component: () => import( '../views/ShoppingCartView.vue'),
+  },
+  {
+    path: '/userMang',
+    name: 'userMang',
+    component: () => import( '../views/UserManagement.vue'),
   },
   {
     path: '/impressum',
     name: 'Impressum',
-    component: () => import( '../views/ImpressumView.vue')
+    component: () => import( '../views/ImpressumView.vue'),
   }
 ]
 

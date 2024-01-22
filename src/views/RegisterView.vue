@@ -6,46 +6,32 @@
         <div class="container-fluid">
       
           
-          <SelectField :id="'anrede'" :label="'Anrede'" :options="anredeOptions" v-model="formData.anrede" :required="true" />
+          <FormField :fieldId="'vorname'" :fieldLabel="'Vorname'" :fieldType="'text'" :value="formData.vorname" @input="formData.vorname = $event" :fieldPlaceholder="'Jane'" :isRequired="true" />
 
-          
-          <FormField :fieldId="'vorname'" :fieldLabel="'Vorname'" :fieldType="'text'" v-model="formData.vorname" :fieldPlaceholder="'Jane'" :isRequired="true" />
+          <FormField :fieldId="'nachname'" :fieldLabel="'Nachname'" :fieldType="'text'" :value="formData.nachname" @input="formData.nachname = $event" :fieldPlaceholder="'Smith'" :isRequired="true" />
 
-          
-          <FormField :fieldId="'nachname'" :fieldLabel="'Nachname'" :fieldType="'text'" v-model="formData.nachname" :fieldPlaceholder="'Smith'" :isRequired="true" />
+          <FormField :fieldId="'username'" :fieldLabel="'Username'" :fieldType="'text'" :value="formData.username" @input="formData.username = $event" :fieldPlaceholder="'exampleUser123'" :isRequired="true" />
 
-          
-          <FormField :fieldId="'username'" :fieldLabel="'Username'" :fieldType="'text'" v-model="formData.username" :fieldPlaceholder="'exampleUser123'" :isRequired="true" />
+          <FormField :fieldId="'email'" :fieldLabel="'E-Mail'" :fieldType="'email'" :value="formData.email" @input="formData.email = $event" :fieldPlaceholder="'example@mail.com'" :isRequired="true" />
 
-          
-          <FormField :fieldId="'email'" :fieldLabel="'E-Mail'" :fieldType="'email'" v-model="formData.email" :fieldPlaceholder="'example@mail.com'" :isRequired="true" />
+          <FormField :fieldId="'password'" :fieldLabel="'Passwort'" :fieldType="'password'" :value="formData.password" @input="formData.password = $event" :fieldPlaceholder="''" :isRequired="true" />
 
-          
-          <FormField :fieldId="'password'" :fieldLabel="'Passwort'" :fieldType="'password'" v-model="formData.password" :fieldPlaceholder="''" :isRequired="true" />
+          <FormField :fieldId="'passwordRepeat'" :fieldLabel="'Passwort wiederholen'" :fieldType="'password'" :value="formData.passwordRepeat" @input="formData.passwordRepeat = $event" :fieldPlaceholder="''" :isRequired="true" />
 
-          
-          <FormField :fieldId="'passwordRepeat'" :fieldLabel="'Passwort wiederholen'" :fieldType="'password'" v-model="formData.passwordRepeat" :fieldPlaceholder="''" :isRequired="true" />
+          <FormField :fieldId="'adresse'" :fieldLabel="'Adresse'" :fieldType="'text'" :value="formData.adresse" @input="formData.adresse = $event" :fieldPlaceholder="''" :isRequired="true" />
 
-          
-          <FormField :fieldId="'adresse'" :fieldLabel="'Adresse'" :fieldType="'text'" v-model="formData.adresse" :fieldPlaceholder="''" :isRequired="true" />
+          <FormField :fieldId="'plz'" :fieldLabel="'Postleitzahl'" :fieldType="'text'" :value="formData.plz" @input="formData.plz = $event" :fieldPlaceholder="''" :isRequired="true" />
 
-          
-          <FormField :fieldId="'plz'" :fieldLabel="'Postleitzahl'" :fieldType="'text'" v-model="formData.plz" :fieldPlaceholder="''" :isRequired="true" />
+          <FormField :fieldId="'ort'" :fieldLabel="'Ort'" :fieldType="'text'" :value="formData.ort" @input="formData.ort = $event" :fieldPlaceholder="''" :isRequired="true" />
 
-          
-          <FormField :fieldId="'ort'" :fieldLabel="'Ort'" :fieldType="'text'" v-model="formData.ort" :fieldPlaceholder="''" :isRequired="true" />
+          <CheckboxField :id="'agree'" :label="'Ich akzeptiere die Nutzungsbedingungen.'" :value="formData.agree" @input="formData.agree = $event" :required="true" />
 
-          
-          <CheckboxField :id="'agree'" :label="'Ich akzeptiere die Nutzungsbedingungen.'" v-model="formData.agree" :required="true" />
-
-          
           <div>
           <ButtonAtom>Registrieren</ButtonAtom>
           </div>
           <div>
           <LinkAtom url="/login">Schon registriert?Hier geht es zur Login!</LinkAtom>
       </div>
-          
         </div>
       </form>
     </div>
@@ -53,28 +39,24 @@
 </template>
 
 <script>
-import SelectField from "@/components/molecules/SelectField.vue";
+import axios from 'axios';
 import CheckboxField from "@/components/molecules/CheckboxField.vue";
 import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
 import FormField from "@/components/molecules/FormField.vue";
 import LinkAtom from "@/components/atoms/LinkAtom.vue";
 import TitleAtom from "@/components/atoms/TitleAtom.vue";
 
-
 export default {
   components: {
-    SelectField,
     CheckboxField,
     ButtonAtom,
     FormField,
-    LinkAtom, 
-    TitleAtom
-
+    LinkAtom,
+    TitleAtom,
   },
   data() {
     return {
       formData: {
-        anrede: "keine Angabe",
         vorname: "",
         nachname: "",
         username: "",
@@ -86,18 +68,24 @@ export default {
         ort: "",
         agree: false,
       },
-      anredeOptions: ["Herr", "Frau", "keine Angabe"],
     };
   },
   methods: {
-    submitForm() {
-      
-      console.log("Form data submitted:", this.formData);
+    async submitForm() {
+      try {
+        // HTTP-Anfrage an den Spring Boot-Backend-Endpunkt senden
+        const response = await axios.post('http://localhost:8081/register', this.formData);
+
+        // Antwort auswerten, hier könntest du weiterleiten oder Erfolgsmeldungen anzeigen
+        console.log('Erfolgreich registriert:', response.data);
+      } catch (error) {
+        // Fehler behandeln, hier könntest du Fehlermeldungen anzeigen
+        console.error('Fehler beim Registrieren:', error);
+      }
     },
   },
 };
 </script>
-
 <style scoped>
 #app {
 display: flex;
