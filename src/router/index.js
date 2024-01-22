@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+const userRole = localStorage.getItem('role');
 
 const routes = [
   {
@@ -62,6 +63,79 @@ const routes = [
     path: '/userMang',
     name: 'userMang',
     component: () => import( '../views/UserManagement.vue'),
+  },
+  {
+    path: '/editProfile',
+    name: 'editProfile',
+    component: () => import( '../views/EditProfile.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_user" || userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: () => import( '../views/LogoutView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_user" || userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  {
+    path: '/productMang',
+    name: 'productMang',
+    component: () => import( '../views/ProductManagement.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  {
+    path: '/shoppingCart',
+    name: 'shoppingCart',
+    component: () => import( '../views/ShoppingCartView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+      console.log(userRole);
+       if (userRole === "ROLE_user")  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  {
+    path: '/userMang',
+    name: 'userMang',
+    component: () => import( '../views/UserManagement.vue'),
+    beforeEnter: (to, from, next) => {
+       if (userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/impressum',
