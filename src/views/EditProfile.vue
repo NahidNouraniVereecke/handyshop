@@ -368,10 +368,13 @@
 import { useUserStore } from '@/store/user.js';
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
 import * as Yup from 'yup';
 
 export default {
   setup() {
+    const router = useRouter();
     const imageFile = ref(null)
     const store = useUserStore();
     const initialUsername = ref(store.username);
@@ -449,6 +452,50 @@ export default {
     });
     const handleFileUpload = event => {
       imageFile.value = event.target.files[0];
+    };
+    const deleteUser = async () =>{
+      const deleteUrl = 'http://localhost:8081/deleteUsername/'+store.username;
+      const accessToken = localStorage.getItem('access_token');
+      console.log(accessToken);
+      
+        axios.delete(deleteUrl, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+    .then(response => {
+      console.log('Deleted successfully:', response.data);
+      //logout
+      console.log("Role:");
+        console.log(localStorage.getItem('role'));
+        console.log("Token:")
+        console.log(localStorage.getItem('access_token'));
+        console.log("Username:")
+        console.log(localStorage.getItem('username'));
+
+        // Löscht die im localStorage gespeicherten Daten
+        localStorage.removeItem('role');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('username');
+
+        console.log("Role:");
+        console.log(localStorage.getItem('role'));
+        console.log("Token:")
+        console.log(localStorage.getItem('access_token'));
+        console.log("Username:")
+        console.log(localStorage.getItem('username'));
+
+        store.clearUserInfo;
+        router.push({ name: 'home' });
+        
+      
+    })
+    .catch(error => {
+      console.error('Error deleting:', error);
+      alertMessage.value = 'Delete not successful, contact customer help to delete your account';
+        showDismissibleAlert.value = true;
+    });
+     
     };
     const saveChanges = async () => {
       Object.keys(errors.value).forEach(key => errors.value[key] = '');
@@ -576,6 +623,7 @@ export default {
       successAlertMessage,
       handleFileUpload,
       errors,
+      deleteUser
     };
   },
   methods: {
@@ -584,7 +632,8 @@ export default {
     },
     dismissSuccessAlert() {
       this.showSuccessAlert = false;
-    },
+    }, 
+    
   }
 };
 </script>

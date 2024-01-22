@@ -96,7 +96,7 @@ export default {
           password: '',
         };
 
-        const backendUrl = 'http://localhost:8081/auth/token';
+        const backendUrl = 'http://localhost:8081/auth/token/email';
 
         const response = await axios.post(backendUrl, {
           username: this.form.values.username,
@@ -111,19 +111,65 @@ export default {
         const accessToken = localStorage.getItem('access_token');
         console.log(accessToken);
 
-        localStorage.setItem('username', this.form.values.username)
-        const username = localStorage.getItem('username')
-        console.log(username);
-
-        const backendUrl2 = 'http://localhost:8081/users/username/';
-        try {
-          const response = await axios.get(`${backendUrl2}${username}`, {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(emailRegex.test(this.form.values.username)){
+          const backendUrl2 = 'http://localhost:8081/users/email/';
+        try{
+          const response = await axios.get(`${backendUrl2}${this.form.values.username}`, {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
             },
           });
 
-          const user = response.data; 
+          const user = response.data;
+
+          console.log(user.status)
+          if(!user.status){
+            localStorage.clear;
+            localStorage.setItem('username', 'inaktiv');
+            throw new Error("This User is deaktiveted please contact customer service for help.")
+          }
+         
+          localStorage.setItem('username', user.username);
+          const username = localStorage.getItem('username');
+          console.log(username);
+
+          console.log('Benutzer:', user);
+
+          localStorage.setItem('role',user.role);
+          const userRoleL = localStorage.getItem('role');
+          console.log(userRoleL);
+
+          this.store.setUserInfo(user);
+
+      
+        }catch (err){
+          console.error('Login nicht erfolgreich:', err);
+
+          this.alertMessage = 'Es gab ein internes Problem versuchen Sie es später nochmal.';
+          this.showDismissibleAlert = true;
+        }
+        }else{
+          const backendUrl2 = 'http://localhost:8081/users/username/';
+        try {
+          const response = await axios.get(`${backendUrl2}${this.form.values.username}`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+
+          const user = response.data;
+
+          console.log(user.status)
+          if(!user.status){
+            localStorage.clear;
+            localStorage.setItem('username', 'inaktiv');
+            throw new Error("This User is deaktiveted please contact customer service for help.")
+          }
+         
+          localStorage.setItem('username', user.username);
+          const username = localStorage.getItem('username');
+          console.log(username);
 
           console.log('Benutzer:', user);
 
@@ -136,24 +182,43 @@ export default {
 
 
 
-
+      
         } catch (err) {
           console.error('Login nicht erfolgreich:', err);
 
           this.alertMessage = 'Es gab ein internes Problem versuchen Sie es später nochmal.';
           this.showDismissibleAlert = true;
         }
-        this.showDismissibleAlert = false; 
-        this.alertMessage = ''; 
+        }
+
+        
+
+      
+        this.showDismissibleAlert = false; // Verberge die Alert-Box, falls sie vorher sichtbar war
+        this.alertMessage = ''; // Setze die Meldung zurück
+
+       
+        if(localStorage.getItem('username') == 'inaktiv'){
+          localStorage.clear;
+          this.store.clearUserInfo;
+          this.alertMessage = 'This User is deaktiveted please contact customer service for help.';
+          this.showDismissibleAlert = true;
+          throw new Error("This User is deaktiveted please contact customer service for help.");
+          
+        }
+
+
         this.$router.push({ name: 'home' });
 
       } catch (err) {
         console.error('Login nicht erfolgreich:', err);
 
-        this.alertMessage = 'Login nicht erfolgreich. Überprüfe deine Anmeldedaten.';
+        if(!this.showDismissibleAlert){
+          this.alertMessage = 'Login nicht erfolgreich. Überprüfe deine Anmeldedaten.';
         this.showDismissibleAlert = true;
-
-
+        }
+        
+       
 
 
         if (err.inner) {
@@ -162,6 +227,7 @@ export default {
           });
         }
       }
+      
     },
   },
 };

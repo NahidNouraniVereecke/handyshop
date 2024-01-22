@@ -28,7 +28,7 @@
   data() {
     return {
       searchQuery: '',
-      products: [] // Initialize as an empty array
+      products: []  
     };
   },
   mounted() {
@@ -37,14 +37,14 @@
   methods: {
     async fetchPhones() {
       try {
-        const response = await axios.get('http://localhost:8081/phones'); // Update with your actual backend URL
+        const response = await axios.get('http://localhost:8081/phones');  
         this.products = response.data.map(phone => ({
           id: phone.id,
           title: phone.name,
-          image: phone.picture, // Assuming 'picture' is the URL to the image
+          image: phone.picture,  
           price: phone.price,
-          shortDescription: phone.description, // Modify as per your data structure
-          deliveryTime: "2-3 days" // Static or based on your logic
+          shortDescription: phone.description,  
+          deliveryTime: "2-3 days"  
         }));
       } catch (error) {
         console.error('Error fetching phones:', error);

@@ -142,6 +142,31 @@ const routes = [
     path: '/impressum',
     name: 'Impressum',
     component: () => import( '../views/ImpressumView.vue'),
+  },
+  {
+    path: '/brandManagement',
+    name: 'brandManagement',
+    component: ()=> import('../views/BrandManagement.vue'),
+  },
+  {
+    path: '/orderManagement',
+    name: 'orderManagement',
+    component: () => import('../views/OrderManagement.vue'),
+  },
+  {
+    path: '/orderView',
+    name: 'orderView',
+    component: () => import('../views/OrderView.vue'),
+  },
+  {
+    path: '/editOrder',
+    name: 'editOrder',
+    component: () => import('../views/editOrderView.vue'),
+  },
+  {
+    path: '/editOrderAdmin',
+    name: 'editOrderAdmin',
+    component: () => import('../views/editOrderAdmin.vue'),
   },{
     path: '/addProduct',
     name: 'addproduct',
