@@ -20,7 +20,7 @@
             <form @submit.prevent="submit">
               <div>
                 <div>
-                  <label for="username">Username</label>
+                  <label for="username">Username or Email</label>
                 </div>
                 <div>
                   <input type="text" id="username" v-model="form.values.username" @blur="validate('username')" />
@@ -36,8 +36,8 @@
                 </div>
                 <p class="error-message" v-if="!!form.errors.password">{{ form.errors.password }}</p>
               </div>
-              <div>
-                <button type="submit">Login</button>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Login</button>
               </div>
               <div>
                 <LinkAtom href="/register">New here? Register here!</LinkAtom>
@@ -59,7 +59,7 @@ import TitleAtom from '@/components/atoms/TitleAtom.vue';
 import {useUserStore} from '@/store/user.js';
 
 const loginSchema = object().shape({
-  username: string().max(20, 'Username must be at most 20 characters.').matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters and numbers.').required(),
+  username: string().min(5, 'Username must be at least 5 characters.').required(),
   password: string().min(8, 'Password must have at least 8 characters').required(),
 });
 
@@ -109,7 +109,7 @@ export default {
           password: '',
         };
 
-        const backendUrl = 'http://localhost:8081/auth/token';
+        const backendUrl = 'http://localhost:8081/auth/token/email';
 
         const response = await axios.post(backendUrl, {
           username: this.form.values.username,
@@ -120,25 +120,33 @@ export default {
 
         console.log('Login erfolgreich. Token:', token);
 
-        // Hier kannst du den Token speichern oder für weitere Anfragen verwenden
+        
         localStorage.setItem('access_token', token);
         const accessToken = localStorage.getItem('access_token');
         console.log(accessToken);
 
-        localStorage.setItem('username', this.form.values.username)
-        const username = localStorage.getItem('username')
-        console.log(username);
-
-        const backendUrl2 = 'http://localhost:8081/users/username/';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(emailRegex.test(this.form.values.username)){
+          const backendUrl2 = 'http://localhost:8081/users/email/';
         try{
-          const response = await axios.get(`${backendUrl2}${username}`, {
+          const response = await axios.get(`${backendUrl2}${this.form.values.username}`, {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
             },
           });
 
-          const user = response.data; // Annahme: Die Rolle des Benutzers wird als Text/String zurückgegeben
-            // Verwende userRole entsprechend deiner Anforderungen
+          const user = response.data;
+
+          console.log(user.status)
+          if(!user.status){
+            localStorage.clear;
+            localStorage.setItem('username', 'inaktiv');
+            throw new Error("This User is deaktiveted please contact customer service for help.")
+          }
+         
+          localStorage.setItem('username', user.username);
+          const username = localStorage.getItem('username');
+          console.log(username);
 
           console.log('Benutzer:', user);
 
@@ -147,32 +155,80 @@ export default {
           console.log(userRoleL);
 
           this.store.setUserInfo(user);
-         
 
-          
-
-
+      
         }catch (err){
           console.error('Login nicht erfolgreich:', err);
 
           this.alertMessage = 'Es gab ein internes Problem versuchen Sie es später nochmal.';
           this.showDismissibleAlert = true;
         }
+        }else{
+          const backendUrl2 = 'http://localhost:8081/users/username/';
+        try{
+          const response = await axios.get(`${backendUrl2}${this.form.values.username}`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+
+          const user = response.data;
+
+          console.log(user.status)
+          if(!user.status){
+            localStorage.clear;
+            localStorage.setItem('username', 'inaktiv');
+            throw new Error("This User is deaktiveted please contact customer service for help.")
+          }
+         
+          localStorage.setItem('username', user.username);
+          const username = localStorage.getItem('username');
+          console.log(username);
+
+          console.log('Benutzer:', user);
+
+          localStorage.setItem('role',user.role);
+          const userRoleL = localStorage.getItem('role');
+          console.log(userRoleL);
+
+          this.store.setUserInfo(user);
+
+      
+        }catch (err){
+          console.error('Login nicht erfolgreich:', err);
+
+          this.alertMessage = 'Es gab ein internes Problem versuchen Sie es später nochmal.';
+          this.showDismissibleAlert = true;
+        }
+        }
+
+        
 
       
         this.showDismissibleAlert = false; // Verberge die Alert-Box, falls sie vorher sichtbar war
         this.alertMessage = ''; // Setze die Meldung zurück
 
        
+        if(localStorage.getItem('username') == 'inaktiv'){
+          localStorage.clear;
+          this.store.clearUserInfo;
+          this.alertMessage = 'This User is deaktiveted please contact customer service for help.';
+          this.showDismissibleAlert = true;
+          throw new Error("This User is deaktiveted please contact customer service for help.");
+          
+        }
+
 
         this.$router.push({ name: 'home' });
 
       } catch (err) {
         console.error('Login nicht erfolgreich:', err);
 
-        this.alertMessage = 'Login nicht erfolgreich. Überprüfe deine Anmeldedaten.';
+        if(!this.showDismissibleAlert){
+          this.alertMessage = 'Login nicht erfolgreich. Überprüfe deine Anmeldedaten.';
         this.showDismissibleAlert = true;
-
+        }
+        
        
 
 
@@ -182,6 +238,7 @@ export default {
           });
         }
       }
+      
     },
   },
 };
@@ -197,7 +254,7 @@ export default {
 }
 
 .container {
-  margin-top: 200px;
+  margin-top: 150px;
   display: flex;
   justify-content: center;
 }
@@ -205,7 +262,7 @@ export default {
 
 
 .login-form {
-  width: 500px;
+  width: 100%;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;

@@ -372,7 +372,8 @@
                 </div>             
               </div>
               <!-- Save changes button -->
-              <button class="btn btn-primary" type="button" @click="saveChanges">Save changes</button>
+              <button class="btn btn-primary me-2" type="button" @click="saveChanges">Save changes</button>
+              <button class="btn btn-primary me-2" type="button" @click="deleteUser">Delete Account</button>
             </form>
           </div>
         </div>
@@ -383,6 +384,8 @@
 import { useUserStore } from '@/store/user.js';
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
 
 export default {
   data() {
@@ -414,6 +417,7 @@ export default {
     });
 },
   setup() {
+    const router = useRouter();
     const imageFile = ref(null)
     const store = useUserStore();
     const initialUsername = ref(store.username);
@@ -439,6 +443,50 @@ export default {
     
     const handleFileUpload = event => {
       imageFile.value = event.target.files[0];
+    };
+    const deleteUser = async () =>{
+      const deleteUrl = 'http://localhost:8081/deleteUsername/'+store.username;
+      const accessToken = localStorage.getItem('access_token');
+      console.log(accessToken);
+      
+        axios.delete(deleteUrl, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+    .then(response => {
+      console.log('Deleted successfully:', response.data);
+      //logout
+      console.log("Role:");
+        console.log(localStorage.getItem('role'));
+        console.log("Token:")
+        console.log(localStorage.getItem('access_token'));
+        console.log("Username:")
+        console.log(localStorage.getItem('username'));
+
+        // Löscht die im localStorage gespeicherten Daten
+        localStorage.removeItem('role');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('username');
+
+        console.log("Role:");
+        console.log(localStorage.getItem('role'));
+        console.log("Token:")
+        console.log(localStorage.getItem('access_token'));
+        console.log("Username:")
+        console.log(localStorage.getItem('username'));
+
+        store.clearUserInfo;
+        router.push({ name: 'home' });
+        
+      
+    })
+    .catch(error => {
+      console.error('Error deleting:', error);
+      alertMessage.value = 'Delete not successful, contact customer help to delete your account';
+        showDismissibleAlert.value = true;
+    });
+     
     };
     const saveChanges = async () => {
             const inputPassword = document.getElementById('inputPassword').value;
@@ -475,15 +523,17 @@ export default {
           const formData = new FormData();
           formData.append('image', imageFile.value);
 
-           const uploadUrl = 'http://localhost:8081/uploadImage/'+store.username;
+            const uploadUrl = 'http://localhost:8081/uploadImage/'+store.username;
+ 
           const response = await axios.post(uploadUrl, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
           });
-
+ 
            console.log('Image upload response:', response.data);
+ 
         } catch (err) {
           console.error('Image upload failed:', err);
         }
@@ -550,6 +600,7 @@ export default {
       showSuccessAlert,
       successAlertMessage,
       handleFileUpload,
+      deleteUser
     };
   },
   
@@ -559,7 +610,8 @@ export default {
     },
     dismissSuccessAlert() {
       this.showSuccessAlert = false;
-    },
+    }, 
+    
   }
 };
 </script>
