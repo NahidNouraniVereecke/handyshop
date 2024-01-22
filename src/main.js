@@ -23,12 +23,12 @@ router.beforeEach((to, from, next) => {
     
   if (!localStorage.getItem('username')) {
     console.log("not featched");
+    console.log(localStorage.getItem('username'));
     
   }else{
     console.log('Main.js');
     const backendUrl2 = 'http://localhost:8081/users/username/';
     const username = localStorage.getItem('username');
-    console.log(username);
     userStore.fetchData(`${backendUrl2}${username}`);
   }
   next();

@@ -69,8 +69,8 @@ const routes = [
     component: () => import( '../views/ImpressumView.vue'),
   },{
     path: '/addProduct',
-    name: 'addProduct',
-    component: () => import('../views/AddProductView.vue'),
+    name: 'addproduct',
+    component: () => import( '../views/AddProductView.vue'),
   },
 ]
 const router = createRouter({

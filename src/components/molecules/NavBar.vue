@@ -3,12 +3,17 @@
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">Home</router-link>
       <router-link to="/products" class="nav-link mb-2">Products</router-link>
-      <router-link v-if="shouldShowLink('editUser')" to="/editProfile" class="nav-link mb-2">Your profile</router-link>
-      <router-link v-if="shouldShowLink('editProducts')" to="/productMang" class="nav-link mb-2">Edit Products</router-link>
-      <router-link v-if="shouldShowLink('shoppingCart')" to="/shoppingCart" class="nav-link mb-2">ShoppingCart</router-link>
-      <router-link v-if="shouldShowLink('editUsers')" to="/userMang" class="nav-link b-2">Edit Users</router-link>
+
       <router-link to="/help" class="nav-link mb-2">HelpPage</router-link>
       <router-link to="/impressum" class="nav-link mb-2">Imprint</router-link>
+
+      <!-- Dropdown-Menü für Verwaltung -->
+      <b-dropdown v-if="shouldShowLink('admin')" text="Verwaltung">
+        <router-link to="/addProduct" class="dropdown-item">Add product</router-link>
+        <router-link to="/productMang" class="dropdown-item">Edit Products</router-link>
+        <router-link to="/userMang" class="dropdown-item">Edit Users</router-link>
+        
+      </b-dropdown>
 
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
@@ -25,10 +30,11 @@
 </template>
 
 <script>
-import {useUserStore} from '@/store/user.js';
+import { useUserStore } from '@/store/user.js';
+
 export default {
-  data(){
-    return{
+  data() {
+    return {
       store: useUserStore(),
     };
   },
@@ -36,9 +42,7 @@ export default {
     shouldShowLink(linkName) {
       const userRole = this.store.userRole;
 
-      console.log(this.store.isLoggedIn);
-
-      // Wenn die Rolle 'ROLE_user' ist
+      
       if (userRole === 'ROLE_user') {
         switch (linkName) {
           case 'editUser':
@@ -49,10 +53,12 @@ export default {
             return false;
         }
       }
+
       
-      // Wenn die Rolle 'ROLE_admin' ist
       if (userRole === 'ROLE_admin') {
         switch (linkName) {
+          case 'admin': 
+          case 'addProduct':
           case 'editProducts':
           case 'editUsers':
           case 'logout':
@@ -62,7 +68,7 @@ export default {
         }
       }
 
-      // Wenn die Rolle nicht gesetzt wurde (noch nicht im Local Storage)
+      
       if (!userRole) {
         switch (linkName) {
           case 'login':
@@ -73,16 +79,14 @@ export default {
         }
       }
 
-      return false; // Standardmäßig nichts anzeigen
+      return false; 
     },
-    
   },
 };
 </script>
 
-
 <style scoped>
 .nav-link {
-  margin-right: 10px; /* Adjust the margin as needed */
+  margin-right: 10px; 
 }
 </style>

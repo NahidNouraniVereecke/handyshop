@@ -1,73 +1,60 @@
 
 <template>
-  <div id="app">
-    
-  <div>
-    <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-      {{ alertMessage }}
-      <button type="button" class="close" @click="dismissAlert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  </div>
-    
-
-    <main>
-      <div class="container">
-        <div class="login-form">
-          <TitleAtom :text="'Login'" />
-          <div class="container-fluid">
-            <form @submit.prevent="submit">
-              <div>
-                <div>
-                  <label for="username">Username</label>
-                </div>
-                <div>
-                  <input type="text" id="username" v-model="form.values.username" @blur="validate('username')" />
-                </div>
-                <p class="error-message" v-if="!!form.errors.username">{{ form.errors.username }}</p>
-              </div>
-              <div>
-                <div>
-                  <label for="password">Password</label>
-                </div>
-                <div>
-                  <input type="password" id="password" v-model="form.values.password" @blur="validate('password')" />
-                </div>
-                <p class="error-message" v-if="!!form.errors.password">{{ form.errors.password }}</p>
-              </div>
-              <div>
-                <button type="submit">Login</button>
-              </div>
-              <div>
-                <LinkAtom href="/register">New here? Register here!</LinkAtom>
-              </div>
-            </form>
-          </div>
-        </div>
+  <div class="container">
+    <div>
+      <div v-if="showDismissibleAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ alertMessage }}
       </div>
-    </main>
-
+    </div>
+    <div class="container">
+      <div class="login-form">
+        <TitleAtom :text="'Login'"></TitleAtom>
+        <form @submit.prevent="submit">
+          <div class="container-fluid">
+            <div class="form-field">
+              <label class="small mb-1" for="username">Username</label>
+              <input class="form-control" type="text" id="username" placeholder="Enter your username"
+                v-model="form.values.username" @blur="validate('username')">
+              <div class="error-message" v-if="!!form.errors.username">{{ form.errors.username }}</div>
+            </div>
+            <div class="form-field">
+              <label class="small mb-1" for="password">Password</label>
+              <input class="form-control" type="password" id="password" placeholder="Enter your password"
+                v-model="form.values.password" @blur="validate('password')">
+              <div class="error-message" v-if="!!form.errors.password">{{ form.errors.password }}></div>
+            </div>
+            <div>
+              <ButtonAtom type="submit">Login</ButtonAtom>
+            </div>
+            <div>
+              <LinkAtom to="/register">New here? Register here!</LinkAtom>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
 import axios from 'axios';
 import { object, string } from 'yup';
-import LinkAtom from '@/components/atoms/LinkAtom';
+import LinkAtom from '@/components/atoms/LinkAtom.vue';
 import TitleAtom from '@/components/atoms/TitleAtom.vue';
-import {useUserStore} from '@/store/user.js';
+import { useUserStore } from '@/store/user.js';
 
 const loginSchema = object().shape({
-  username: string().max(20, 'Username must be at most 20 characters.').matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters and numbers.').required(),
-  password: string().min(8, 'Password must have at least 8 characters').required(),
+  username: string().required(),
+  password: string().required(),
 });
 
 export default {
   name: 'LoginView',
   components: {
-    LinkAtom,
     TitleAtom,
+    ButtonAtom,
+    LinkAtom,
   },
   data() {
     return {
@@ -115,12 +102,11 @@ export default {
           username: this.form.values.username,
           password: this.form.values.password,
         });
-
+        
         const token = response.data.token;
 
         console.log('Login erfolgreich. Token:', token);
 
-        // Hier kannst du den Token speichern oder für weitere Anfragen verwenden
         localStorage.setItem('access_token', token);
         const accessToken = localStorage.getItem('access_token');
         console.log(accessToken);
@@ -130,41 +116,35 @@ export default {
         console.log(username);
 
         const backendUrl2 = 'http://localhost:8081/users/username/';
-        try{
+        try {
           const response = await axios.get(`${backendUrl2}${username}`, {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
             },
           });
 
-          const user = response.data; // Annahme: Die Rolle des Benutzers wird als Text/String zurückgegeben
-            // Verwende userRole entsprechend deiner Anforderungen
+          const user = response.data; 
 
           console.log('Benutzer:', user);
 
-          localStorage.setItem('role',user.role);
+          localStorage.setItem('role', user.role);
           const userRoleL = localStorage.getItem('role');
           console.log(userRoleL);
 
           this.store.setUserInfo(user);
-         
-
-          
 
 
-        }catch (err){
+
+
+
+        } catch (err) {
           console.error('Login nicht erfolgreich:', err);
 
           this.alertMessage = 'Es gab ein internes Problem versuchen Sie es später nochmal.';
           this.showDismissibleAlert = true;
         }
-
-      
-        this.showDismissibleAlert = false; // Verberge die Alert-Box, falls sie vorher sichtbar war
-        this.alertMessage = ''; // Setze die Meldung zurück
-
-       
-
+        this.showDismissibleAlert = false; 
+        this.alertMessage = ''; 
         this.$router.push({ name: 'home' });
 
       } catch (err) {
@@ -173,7 +153,7 @@ export default {
         this.alertMessage = 'Login nicht erfolgreich. Überprüfe deine Anmeldedaten.';
         this.showDismissibleAlert = true;
 
-       
+
 
 
         if (err.inner) {
@@ -188,37 +168,12 @@ export default {
 </script>
 
 <style scoped>
-#app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100vh;
-}
-
 .container {
-  margin-top: 200px;
-  display: flex;
-  justify-content: center;
-}
-
-
-
-.login-form {
   width: 500px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  
-}
-
 
 .error-message {
   color: red;
