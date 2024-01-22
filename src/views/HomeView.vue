@@ -20,7 +20,6 @@
           :productId="product.id"
         />
       </b-row>
-    </b-container>
   </div>
 </template>
 

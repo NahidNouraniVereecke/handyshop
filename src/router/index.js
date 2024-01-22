@@ -59,10 +59,11 @@ const routes = [
     name: 'shoppingCart',
     component: () => import( '../views/ShoppingCartView.vue'),
   },
+ 
   {
-    path: '/userMang',
-    name: 'userMang',
-    component: () => import( '../views/UserManagement.vue'),
+    path: '/AddProduct',
+    name: 'Addproduct',
+    component: () => import( '../views/AddProductView.vue'),
   },
   {
     path: '/editProfile',
