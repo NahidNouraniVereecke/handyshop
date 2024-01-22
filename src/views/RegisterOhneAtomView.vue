@@ -25,7 +25,7 @@
             <div v-if="formData.salutation === 'OTHER'" class="form-field">
               <label class="small mb-1" for="inputOtherDetails">Enter your personal salutation (max 30 characters)</label>
               <input class="form-control" id="inputOtherDetails" type="text" placeholder="Salutation"
-                v-model="store.otherinfo" maxlength="30" />
+                v-model="formData.otherinfo" maxlength="30" />
             </div>
 
             <div class="form-field">
@@ -392,6 +392,7 @@ export default {
     return {
       formData: {
         salutation: '',
+        otherSalutation: '',
         firstname: '',
         lastname: '',
         username: '',
