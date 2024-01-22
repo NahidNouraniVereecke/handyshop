@@ -18,7 +18,8 @@
 
     <!-- Account page navigation -->
     <h1>Edit your User Information</h1>
-    <hr class="mt-0 mb-4">
+    <img :src="fullImagePath" alt="Dynamic Image">
+            <hr class="mt-0 mb-4">
         <!-- Account details card -->
         <div class="card mb-4">
           <div class="card-header">Account Details</div>
@@ -384,6 +385,34 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 export default {
+  data() {
+    return {
+      fullImagePath: '', 
+    };
+  },
+   
+  mounted() {
+  axios.get('http://localhost:8081/user/role/michi3')
+    .then(response => {
+      console.log(response.data);
+
+       let parts = response.data.split('\\');
+
+       if (parts.length >= 2) {
+
+         let imageName = parts[5];
+         this.fullImagePath = require(`@/pics/${imageName}`);
+                 console.log(this.imagePath);
+      } else {
+         console.error('Unexpected response format:', response.data);
+      }
+
+      console.log(this.imagePath);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+},
   setup() {
     const imageFile = ref(null)
     const store = useUserStore();
@@ -407,6 +436,7 @@ export default {
         password: store.password,
       },
     ];
+    
     const handleFileUpload = event => {
       imageFile.value = event.target.files[0];
     };
@@ -445,8 +475,7 @@ export default {
           const formData = new FormData();
           formData.append('image', imageFile.value);
 
-          // Replace with your backend URL for image upload
-          const uploadUrl = 'http://localhost:8081/uploadImage/'+store.username;
+           const uploadUrl = 'http://localhost:8081/uploadImage/'+store.username;
           const response = await axios.post(uploadUrl, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -454,8 +483,7 @@ export default {
             }
           });
 
-          // Handle response here
-          console.log('Image upload response:', response.data);
+           console.log('Image upload response:', response.data);
         } catch (err) {
           console.error('Image upload failed:', err);
         }
@@ -483,8 +511,7 @@ export default {
         });
         console.log('Update Message:', response.data);
 
-        //Token Update
-        try {
+         try {
           const backendUrlToken = 'http://localhost:8081/auth/token';
 
           const responseToken = await axios.post(backendUrlToken, {
@@ -525,6 +552,7 @@ export default {
       handleFileUpload,
     };
   },
+  
   methods: {
     dismissAlert() {
       this.showDismissibleAlert = false;
