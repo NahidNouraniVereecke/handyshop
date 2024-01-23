@@ -64,6 +64,7 @@
                         </div>
 
                         <ButtonAtom class="btn btn-primary" type="button" @click="submitForm">Update</ButtonAtom>
+                        <ButtonAtom class="btn btn-primary" type="button" @click="deletePhone">Delete</ButtonAtom>
                     </div>
                 </form>
             </div>
@@ -99,7 +100,7 @@ export default {
             newBrandName: '',
             newBrandImage: null,
             successMessage: '',
-            errorMessage: '',
+            errorMessage: ''
 
         };
     },
@@ -147,6 +148,27 @@ export default {
                 // Behandlung für den Fehler, z.B. Anzeige einer Fehlermeldung
             }
         },
+
+        async deletePhone(){
+            const phoneId = this.$route.params.id;
+            const accessToken = localStorage.getItem('access_token');
+            try{
+                const deleteUrl = 'http://localhost:8081/deletePhone/'+phoneId;
+                const response = await axios.delete(deleteUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
+                console.log('Phone deleted:', response);
+                this.$router.push({ name: 'productMang' });
+
+            }catch(error){
+                console.log('Error deleting Phone. Make sure there are no more Orders connected.');
+                this.errorMessage = 'Error deleting Phone. Make sure there are no more Orders connected.';
+                setTimeout(() => this.errorMessage = '', 3000);
+            }
+
+        },
        
         async submitForm() {
             console.log('submitForm aufgerufen');
@@ -170,11 +192,11 @@ export default {
                     }
                 });
                 console.log('Telefon aktualisiert:', response);
-                this.successMessage = 'Telefon erfolgreich aktualisiert!';
+                this.successMessage = 'Phone succesfully updated!';
                 setTimeout(() => this.successMessage = '', 3000);
             } catch (error) {
                 console.error('Fehler beim Aktualisieren des Telefons:', error);
-                this.errorMessage = 'Fehler beim Aktualisieren des Telefons.';
+                this.errorMessage = 'Error deleting phone!';
                 setTimeout(() => this.errorMessage = '', 3000);
             }
         }

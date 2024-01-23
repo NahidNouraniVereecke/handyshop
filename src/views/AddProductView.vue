@@ -216,6 +216,7 @@ export default {
             })
                 .then(async response => {
                     console.log('Telefon hinzugefügt:', response);
+                    console.log('response data', response.data);
                     this.successMessage = 'Phone succesfully added!';
 
                      // If a file is selected, upload it

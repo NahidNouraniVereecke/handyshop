@@ -42,42 +42,6 @@ const routes = [
   {
     path: '/editProfile',
     name: 'editProfile',
-    component: () => import( '../views/EditProfile.vue')
-  },
-  {
-    path: '/logout',
-    name: 'logout',
-    component: () => import( '../views/LogoutView.vue'),
-  },
-  {
-    path: '/productMang',
-    name: 'productMang',
-    component: () => import( '../views/ProductManagement.vue'),
-  },
-  {
-    path: '/shoppingCart',
-    name: 'shoppingCart',
-    component: () => import( '../views/ShoppingCartView.vue'),
-  },
-  {
-    path: '/AddProduct',
-    name: 'Addproduct',
-    component: () => import( '../views/AddProductView.vue'),
-  },
-  {
-    path: '/EditProduct/:id',
-    name: 'EditProduct',
-    component: () => import( '../views/EditProductView.vue'),
-  },
-  
-  {
-    path: '/EditUserAdmin/:id',
-    name: 'EditUserAdmin',
-    component: () => import( '../views/EditUserAdminView.vue'),
-  },
-  {
-    path: '/EditProfile',
-    name: 'EditProfile',
     component: () => import( '../views/EditProfile.vue'),
     beforeEnter: (to, from, next) => {
       const userRole = localStorage.getItem('role');
@@ -94,16 +58,6 @@ const routes = [
     path: '/logout',
     name: 'logout',
     component: () => import( '../views/LogoutView.vue'),
-    beforeEnter: (to, from, next) => {
-      const userRole = localStorage.getItem('role');
-
-       if (userRole === "ROLE_user" || userRole === "ROLE_admin" )  {
-       
-        next();
-      } else {
-         next('/access-denied');  
-      }
-    }
   },
   {
     path: '/productMang',
@@ -112,7 +66,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       const userRole = localStorage.getItem('role');
 
-       if (userRole === "ROLE_admin" )  {
+       if ( userRole === "ROLE_admin" )  {
        
         next();
       } else {
@@ -126,8 +80,69 @@ const routes = [
     component: () => import( '../views/ShoppingCartView.vue'),
     beforeEnter: (to, from, next) => {
       const userRole = localStorage.getItem('role');
-      console.log(userRole);
-       if (userRole === "ROLE_user")  {
+
+       if (userRole === "ROLE_user" || userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  {
+    path: '/AddProduct',
+    name: 'Addproduct',
+    component: () => import( '../views/AddProductView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  {
+    path: '/EditProduct/:id',
+    name: 'EditProduct',
+    component: () => import( '../views/EditProductView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if ( userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  
+  {
+    path: '/EditUserAdmin/:id',
+    name: 'EditUserAdmin',
+    component: () => import( '../views/EditUserAdminView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
+  },
+  {
+    path: '/EditProfile',
+    name: 'EditProfile',
+    component: () => import( '../views/EditProfile.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_user" || userRole === "ROLE_admin" )  {
        
         next();
       } else {
@@ -160,30 +175,90 @@ const routes = [
     path: '/brandManagement',
     name: 'brandManagement',
     component: ()=> import('../views/BrandManagement.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if ( userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/orderManagement',
     name: 'orderManagement',
     component: () => import('../views/OrderManagement.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/orderView',
     name: 'orderView',
     component: () => import('../views/OrderView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_user" || userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/editOrder',
     name: 'editOrder',
     component: () => import('../views/editOrderView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if (userRole === "ROLE_user" || userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
   {
     path: '/editOrderAdmin',
     name: 'editOrderAdmin',
     component: () => import('../views/editOrderAdmin.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if ( userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },{
     path: '/addProduct',
     name: 'addproduct',
     component: () => import( '../views/AddProductView.vue'),
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem('role');
+
+       if ( userRole === "ROLE_admin" )  {
+       
+        next();
+      } else {
+         next('/access-denied');  
+      }
+    }
   },
 ]
 const router = createRouter({
