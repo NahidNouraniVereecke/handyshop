@@ -1,5 +1,5 @@
 <template>
-    <img :src="require(`@/pics/${src}`)" alt="Product Image" class="product-image" @click="handleClick" />
+    <img :src= src alt="Product Image" class="product-image" @click="handleClick" />
   </template>
   
   <script>
