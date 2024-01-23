@@ -14,5 +14,7 @@
   </script>
   
   <style scoped>
-  
+  #component{
+    align-items: center;
+  }
   </style>
