@@ -357,6 +357,7 @@
                 accept="image/*">
             </div>
             <button class="btn btn-primary" type="button" @click="saveChanges">Save changes</button>
+            <button class="btn btn-primary" type="button" @click="deleteUser">Delete Account</button>
           </div>
         </form>
       </div>
