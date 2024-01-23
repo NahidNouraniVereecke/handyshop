@@ -1,7 +1,7 @@
 <template>
   <div class="product-card">
-    <ImageAtom :src="image" @click="goToProductPage" />
-    <TitleAtom :text="title" />
+    <ImageAtom :src="require(`@/pics/${image}`)" @click="goToProductPage" />
+        <TitleAtom :text="title" />
     <ShortDescriptionAtom :shortDescription="shortDescription" />
     <PriceAtom :price="price" />
     <DeliveryTimeAtom :deliveryTime="deliveryTime" />
@@ -42,8 +42,27 @@ export default {
       this.$router.push(`/products/${this.productId}`);
     },
     addToCart() {
-      console.log(`Added ${this.title} to the cart`);
-    },
+  console.log(`Added ${this.title} to the cart`);
+
+ 
+  const productDetails = {
+    id: this.productId,
+    title: this.title,
+    image: this.image,
+    price: this.price,
+    shortDescription: this.shortDescription,
+    deliveryTime: this.deliveryTime
+  };
+
+ 
+  let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+
+ 
+  cart.push(productDetails);
+
+ 
+  sessionStorage.setItem('cart', JSON.stringify(cart));
+},
   },
 };
 </script>

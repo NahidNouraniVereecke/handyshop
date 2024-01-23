@@ -1,7 +1,7 @@
 <template>
-    <a :href="url" class="link">
+    <b-link :href="url" class="link">
       <slot></slot>
-    </a>
+    </b-link>
   </template>
   
   <script>
@@ -14,11 +14,9 @@
   
   <style scoped>
   .link {
-    
-    color: blue; 
+    color: blau; 
     text-decoration: underline;
     cursor: pointer;
-    margin-left: 10px;
   }
   </style>
   

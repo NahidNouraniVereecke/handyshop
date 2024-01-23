@@ -1,50 +1,98 @@
 <template>
-  <div class="navbar-container">
-    <div class="centered-elements">
-      <RouterLinkAtom :url="'/'">Home</RouterLinkAtom>
-      <RouterLinkAtom :url="'/products'">Products</RouterLinkAtom>
-      <RouterLinkAtom :url="'/help'">HelpPage</RouterLinkAtom>
-      <RouterLinkAtom :url="'/impressum'">Imprint</RouterLinkAtom>
-      <InputAtom id="input" placeholder=" search" />
-    </div>
+  <div class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <router-link to="/" class="navbar-brand">Home</router-link>
+      <router-link to="/products" class="nav-link mb-2">Products</router-link>
+      <router-link v-if="shouldShowLink('editUser')" to="/editProfile" class="nav-link mb-2">Your profile</router-link>
+      <router-link v-if="shouldShowLink('editProducts')" to="/productMang" class="nav-link mb-2">Edit Phones</router-link>
+      <router-link v-if="shouldShowLink('shoppingCart')" to="/shoppingCart" class="nav-link mb-2">ShoppingCart</router-link>
+      <router-link v-if="shouldShowLink('editUsers')" to="/userMang" class="nav-link b-2">Edit Users</router-link>
+      <router-link v-if="shouldShowLink('editBrands')" to="/brandManagement" class="nav-link b-2">Edit Brands</router-link>
+      <router-link v-if="shouldShowLink('editOrders')" to="/orderManagement" class="nav-link b-2">Edit Orders</router-link>
+      <router-link v-if="shouldShowLink('orderView')" to="/orderView" class="nav-link b-2">Orders</router-link>
 
-    <div class="right-elements">
-      <RouterLinkAtom :url="'/login'">Login</RouterLinkAtom>
-      <RouterLinkAtom :url="'/register'">Register</RouterLinkAtom>
+      <router-link to="/help" class="nav-link mb-2">HelpPage</router-link>
+      <router-link to="/impressum" class="nav-link mb-2">Imprint</router-link>
+
+      <!-- Dropdown-Menü für Verwaltung -->
+      <b-dropdown v-if="shouldShowLink('admin')" text="Verwaltung">
+        <router-link to="/addProduct" class="dropdown-item">Add product</router-link>
+        <router-link to="/productMang" class="dropdown-item">Edit Products</router-link>
+        <router-link to="/userMang" class="dropdown-item">Edit Users</router-link>
+        
+      </b-dropdown>
+
+
+      <div class="ms-auto">
+        <router-link v-if="shouldShowLink('login')" to="/login" class="nav-link">Login</router-link>
+        <router-link v-if="shouldShowLink('register')" to="/register" class="nav-link">Register</router-link>
+        <router-link v-if="shouldShowLink('logout')" to="/logout" class="nav-link">Logout</router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import InputAtom from "@/components/atoms/InputAtom.vue";
-import RouterLinkAtom from "@/components/atoms/RouterLinkAtom.vue";
+import { useUserStore } from '@/store/user.js';
 
 export default {
-  components: {
-    InputAtom,
-    RouterLinkAtom,
+  data() {
+    return {
+      store: useUserStore(),
+    };
+  },
+  methods: {
+    shouldShowLink(linkName) {
+      const userRole = this.store.userRole;
+
+      
+      if (userRole === 'ROLE_user') {
+        switch (linkName) {
+          case 'editUser':
+          case 'shoppingCart':
+          case 'logout':
+          case 'orderView':
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      
+      if (userRole === 'ROLE_admin') {
+        switch (linkName) {
+          case 'admin': 
+          case 'addProduct':
+          case 'editProducts':
+          case 'editUsers':
+          case 'logout':
+          case 'editBrands':
+          case 'editOrders':
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      
+      if (!userRole) {
+        switch (linkName) {
+          case 'login':
+          case 'register':
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      return false; 
+    },
   },
 };
 </script>
 
 <style scoped>
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  background-color: green;
-  padding: 10px;
-}
-
-.centered-elements {
-  display: flex;
-  align-items: center;
-}
-
-.right-elements {
-  display: flex;
-  align-items: center;
-}
-#input{
-  margin-left: 20px;
+.nav-link {
+  margin-right: 10px; 
 }
 </style>

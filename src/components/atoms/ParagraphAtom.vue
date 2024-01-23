@@ -11,5 +11,7 @@
   </script>
   
   <style scoped>
-  
+  p{
+    margin-left: 30px;
+  }
   </style>
