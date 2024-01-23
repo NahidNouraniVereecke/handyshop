@@ -436,11 +436,12 @@ export default {
           .required('Password confirmation is required'),
         street: yup.string().required('Street is required'),
         houseNumber: yup.string()
-          .matches(/^[0-9]+[A-Za-z]?$/, 'House number must be numbers followed by an optional letter')
-          .required('House number is required'),
-        postalCode: yup.string()
-          .required('Postal code is required')
-          .matches(/^\d{4}$/, 'Postal code must be exactly 4 digits'),
+  .matches(/^[0-9A-Za-z/]+$/, 'House number must be numbers, letters, or slashes')
+  .required('House number is required'),
+postalCode: yup.string()
+  .required('Postal code is required')
+  .matches(/^\d+$/, 'Postal code must consist of numbers only')
+  .min(4, 'Postal code must be at least 4 digits long'),
         city: yup.string().required('City is required'),
         country: yup.string().required('Country is required'),
         privacyPolicyAccepted: yup.boolean()
@@ -471,10 +472,12 @@ export default {
 
       try {
         await axios.post(url);
-        this.successMessage = 'Registrierung erfolgreich!';
+        this.successMessage = 'Registrierung erfolgreich! Sie werden weitergeleitet!';
         setTimeout(() => {
           this.successMessage = '';
+          window.location.href = '/login';
         }, 3000);
+
       } catch (error) {
         if (error.response && error.response.status === 400) {
           

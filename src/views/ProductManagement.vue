@@ -79,7 +79,7 @@ export default {
       // Triggered when the search term changes
     },
     editPhone(phone) {
-      this.$router.push({ name: 'Editproduct', params: { id: phone.id } });
+      this.$router.push({ name: 'EditProduct', params: { id: phone.id } });
     },
 
     formatDateTime(dateTime) {
