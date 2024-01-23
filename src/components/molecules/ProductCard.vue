@@ -1,7 +1,7 @@
 <template>
   <div class="product-card">
-    <ImageAtom :src="image" @click="goToProductPage" />
-    <TitleAtom :text="title" />
+    <ImageAtom :src="require(`@/pics/${image}`)" @click="goToProductPage" />
+        <TitleAtom :text="title" />
     <ShortDescriptionAtom :shortDescription="shortDescription" />
     <PriceAtom :price="price" />
     <DeliveryTimeAtom :deliveryTime="deliveryTime" />
