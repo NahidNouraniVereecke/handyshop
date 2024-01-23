@@ -66,8 +66,14 @@ const routes = [
   },
   {
     path: '/EditProduct/:id',
-    name: 'Editproduct',
+    name: 'EditProduct',
     component: () => import( '../views/EditProductView.vue'),
+  },
+  
+  {
+    path: '/EditUserAdmin/:id',
+    name: 'EditUserAdmin',
+    component: () => import( '../views/EditUserAdminView.vue'),
   },
   {
     path: '/EditProfile',

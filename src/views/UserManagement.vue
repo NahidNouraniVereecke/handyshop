@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container">
     <header class="header text-center">
-      <h1>User Management</h1>
+      <TitleAtom text="User Management"></TitleAtom>
     </header>
     <main>
       <div class="row mt-4">
@@ -21,7 +21,8 @@
                 <strong>Created on:</strong> {{ formatDateTime(user.createdOn) }}<br>
                 <strong>Last updated on:</strong> {{ formatDateTime(user.lastUpdatedOn) }}
               </p>
-              <button @click="editUser(user)" class="btn btn-primary btn-sm">Edit</button>
+              <ButtonAtom @click="editUser(user)" class="btn btn-primary btn-sm">Edit</ButtonAtom>
+              
             </div>
           </div>
         </div>
@@ -32,8 +33,15 @@
 
 <script>
 import axios from 'axios';
+import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
+import TitleAtom from "@/components/atoms/TitleAtom.vue";
+
 
 export default {
+  components: {
+        ButtonAtom,
+        TitleAtom
+    },
   data() {
     return {
       users: [],
@@ -69,8 +77,7 @@ export default {
       // Triggered when the search term changes
     },
     editUser(user) {
-      // Logic to open edit dialog goes here (implement later)
-      console.log('Editing user:', user);
+      this.$router.push({ name: 'EditUserAdmin', params: { id: user.id } });
     },
     formatDateTime(dateTime) {
       return new Date(dateTime).toLocaleString();
