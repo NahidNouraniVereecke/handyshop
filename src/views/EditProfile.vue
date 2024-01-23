@@ -358,8 +358,8 @@
               <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload"
                 accept="image/*">
             </div>
-            <ButtonAtom  type="button" @click="saveChanges">Save changes</ButtonAtom>
-            <ButtonAtom  type="button" @click="deleteUser">Delete Account</ButtonAtom>
+            <button class="btn btn-primary" type="button" @click="saveChanges">Save changes</button>
+            <button class="btn btn-primary" type="button" @click="deleteUser">Delete Account</button>
           </div>
         </form>
       </div>
@@ -374,15 +374,11 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 import * as Yup from 'yup';
-import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
 
 export default {
-  components: {
-    ButtonAtom,
-  },
-  data(){
-    return{
-      fullImagePath: '',
+  data() {
+    return {
+      fullImagePath: '', 
     };
   },
   setup() {
@@ -641,9 +637,16 @@ export default {
   },
   mounted() {
     const store = useUserStore();
-    
-  axios.get('http://localhost:8081/user/role/'+store.username)
-    .then(response => {
+    const accessToken2 = localStorage.getItem('access_token');
+
+    console.log(accessToken2);
+ 
+axios.get('http://localhost:8081/user/image/'+store.username
+ , {
+  headers: {
+    'Authorization': `Bearer ${accessToken2}`
+  }
+}).then(response => {
       console.log(response.data);
       console.log(store.username);
 
