@@ -12,7 +12,7 @@
         <form @submit.prevent="submit">
           <div class="container-fluid">
             <div class="form-field">
-              <label class="small mb-1" for="username">Username</label>
+              <label class="small mb-1" for="username">Username / E-mail</label>
               <input class="form-control" type="text" id="username" placeholder="Enter your username"
                 v-model="form.values.username" @blur="validate('username')">
               <div class="error-message" v-if="!!form.errors.username">{{ form.errors.username }}</div>

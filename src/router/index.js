@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-const userRole = localStorage.getItem('role');
+
 
 const routes = [
   {
@@ -134,6 +134,7 @@ const routes = [
     name: 'userMang',
     component: () => import( '../views/UserManagement.vue'),
     beforeEnter: (to, from, next) => {
+    const userRole = localStorage.getItem('role');
        if (userRole === "ROLE_admin" )  {
        
         next();
