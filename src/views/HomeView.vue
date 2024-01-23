@@ -9,16 +9,7 @@
       <TitleAtom :text="'Our Best Sellers:'" />
 
       <b-row class="product-view">
-        <ProductCard
-          v-for="product in products"
-          :key="product.id"
-          :title="product.title"
-          :image="product.image"
-          :price="product.price"
-          :shortDescription="product.shortDescription"
-          :deliveryTime="product.deliveryTime"
-          :productId="product.id"
-        />
+        
       </b-row>
   </div>
 </template>
@@ -26,14 +17,12 @@
 <script>
 import ParagraphAtom from '@/components/atoms/ParagraphAtom.vue';
 import HeaderAtom from '@/components/atoms/headerAtom.vue';
-import ProductCard from "@/components/molecules/ProductCard.vue";
 import TitleAtom from '@/components/atoms/TitleAtom.vue';
 
 export default {
   components: {
     HeaderAtom,
     ParagraphAtom,
-    ProductCard,
     TitleAtom
   },
   data() {

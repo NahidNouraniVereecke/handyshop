@@ -19,7 +19,6 @@
                   <strong>Last updated on:</strong> {{ formatDateTime(brand.lastUpdatedOn) }}<br>
                   <strong>Created by:</strong> {{ brand.createdBy ? brand.createdBy.username : 'N/A' }}
                 </p>
-                <button @click="editBrand(brand)" class="btn btn-primary btn-sm">Edit</button>
               </div>
             </div>
           </div>
