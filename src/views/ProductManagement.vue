@@ -1,12 +1,13 @@
 <template>
   <div id="app" class="container">
     <header class="header text-center">
-      <h1>Phone Management</h1>
+      <TitleAtom text="Phone Management"></TitleAtom>
     </header>
     <main>
       <div class="row mt-4">
         <div class="col-md-6 mb-3">
-          <input v-model="searchTerm" @input="searchPhones" class="form-control" type="text" placeholder="Search for phone">
+          <input v-model="searchTerm" @input="searchPhones" class="form-control" type="text"
+            placeholder="Search for phone">
         </div>
       </div>
       <div class="row">
@@ -21,7 +22,7 @@
                 <strong>Last updated on:</strong> {{ formatDateTime(phone.lastUpdatedOn) }}<br>
                 <strong>Created by:</strong> {{ phone.createdBy.username }}
               </p>
-              <button @click="editPhone(phone)" class="btn btn-primary btn-sm">Edit</button>
+              <ButtonAtom @click="editPhone(phone)" class="btn btn-primary btn-sm">Edit</ButtonAtom>
             </div>
           </div>
         </div>
@@ -32,8 +33,15 @@
 
 <script>
 import axios from 'axios';
+import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
+import TitleAtom from "@/components/atoms/TitleAtom.vue";
+
 
 export default {
+  components: {
+        ButtonAtom,
+        TitleAtom
+    },
   data() {
     return {
       phones: [],
@@ -45,13 +53,13 @@ export default {
   },
   computed: {
     filteredPhones() {
-    return this.phones.filter(phone =>
-      Object.values(phone).some(value =>
-        String(value).toLowerCase().includes(this.searchTerm.toLowerCase())
-      ) ||
-      (phone.brand && phone.brand.name.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
-      (phone.createdBy && phone.createdBy.username.toLowerCase().includes(this.searchTerm.toLowerCase()))
-    );
+      return this.phones.filter(phone =>
+        Object.values(phone).some(value =>
+          String(value).toLowerCase().includes(this.searchTerm.toLowerCase())
+        ) ||
+        (phone.brand && phone.brand.name.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+        (phone.createdBy && phone.createdBy.username.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      );
     },
   },
   methods: {
@@ -71,8 +79,9 @@ export default {
       // Triggered when the search term changes
     },
     editPhone(phone) {
-      console.log('Editing phone:', phone);
+      this.$router.push({ name: 'Editproduct', params: { id: phone.id } });
     },
+
     formatDateTime(dateTime) {
       return new Date(dateTime).toLocaleString();
     },
