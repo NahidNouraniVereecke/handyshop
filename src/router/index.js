@@ -59,15 +59,19 @@ const routes = [
     name: 'shoppingCart',
     component: () => import( '../views/ShoppingCartView.vue'),
   },
- 
   {
     path: '/AddProduct',
     name: 'Addproduct',
     component: () => import( '../views/AddProductView.vue'),
   },
   {
-    path: '/editProfile',
-    name: 'editProfile',
+    path: '/EditProduct/:id',
+    name: 'Editproduct',
+    component: () => import( '../views/EditProductView.vue'),
+  },
+  {
+    path: '/EditProfile',
+    name: 'EditProfile',
     component: () => import( '../views/EditProfile.vue'),
     beforeEnter: (to, from, next) => {
       const userRole = localStorage.getItem('role');
@@ -138,6 +142,8 @@ const routes = [
       }
     }
   },
+  
+  
   {
     path: '/impressum',
     name: 'Impressum',
