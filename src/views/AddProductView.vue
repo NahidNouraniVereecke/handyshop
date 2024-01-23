@@ -74,7 +74,7 @@
                         </div>
                         <div class="input-field">
                             <label for="imageUpload" class="form-label">Upload Image</label>
-                            <input class="form-control" type="file" id="imageUpload">
+                            <input class="form-control" type="file" id="imageUpload" @change="handleFileSelect">
                         </div>
 
                         <ButtonAtom class="btn btn-primary" type="button" @click="submitForm">Add</ButtonAtom>
@@ -132,7 +132,9 @@ export default {
             });
         },
 
-
+        handleFileSelect(event) {
+        this.selectedFile = event.target.files[0];
+        },
         async validateFormData() {
 
             try {
@@ -173,7 +175,7 @@ export default {
             const token = localStorage.getItem('access_token');
             let brandName = this.brand; // Standardmäßig wird der bereits ausgewählte Markenname verwendet
 
-            // Wenn es sich um eine neue Marke handelt, fügen Sie diese zuerst hinzu
+            // add Brand
             if (this.isAddingNewBrand && this.newBrandName) {
                 const addBrandUrl = `http://localhost:8081/addbrand/${username}?name=${this.newBrandName}&picturePath=null`;
                 console.log("Versuch, neue Marke hinzuzufügen mit URL:", addBrandUrl); // Loggen der URL
@@ -185,7 +187,6 @@ export default {
                         }
                     });
                     brandName = this.newBrandName;
-                    // Verwenden Sie den neuen Markennamen für das Hinzufügen des Telefons
                 } catch (error) {
                     if (error.response && error.response.data) {
                         // Wenn die Antwort eine Liste von Fehlermeldungen ist
@@ -206,16 +207,38 @@ export default {
                 }
             }
 
-            // Fügen Sie das Telefon hinzu
+            
             const addPhoneUrl = `http://localhost:8081/addPhone/${username}/${brandName}`;
             axios.post(addPhoneUrl, this.formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
-                .then(response => {
+                .then(async response => {
                     console.log('Telefon hinzugefügt:', response);
-                    this.successMessage = 'Produkt erfolgreich hinzugefügt!';
+                    this.successMessage = 'Phone succesfully added!';
+
+                     // If a file is selected, upload it
+                    if (this.selectedFile) {
+                        const uploadUrl = `http://localhost:8081/phones/upload/${response.data}`;
+                        const formData = new FormData();
+                        formData.append('image', this.selectedFile);
+
+                        try {
+                            await axios.post(uploadUrl, formData, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            });
+                            console.log('Bild erfolgreich hochgeladen');
+                        } catch (uploadError) {
+                            console.error('Fehler beim Hochladen des Bildes:', uploadError);
+                            this.errorMessage = 'Fehler beim Hochladen des Bildes.';
+                        }
+                    }
+
+
                     setTimeout(() => {
                         this.successMessage = '';
                     }, 3000);
@@ -223,7 +246,7 @@ export default {
                 })
                 .catch(error => {
                     console.error('Fehler beim Hinzufügen des Telefons:', error);
-                    this.errorMessage = 'Fehler beim Hinzufügen des Produkts.';
+                    this.errorMessage = 'Error adding new Phone: ';
                     setTimeout(() => {
                         this.errorMessage = '';
                     }, 3000);

@@ -13,6 +13,8 @@
         <form>
           <div class="container-fluid">
             <div>
+              <img :src="fullImagePath" alt="Profilepic">
+                <br>
               <label class="small mb-1" for="inputSalutation">Salutation</label>
               <select class="form-control" id="inputSalutation" v-model="store.salutation">
                 <option value="MR" :selected="store.salutation === 'MR'">MR</option>
@@ -627,6 +629,22 @@ export default {
       deleteUser
     };
   },
+  mounted() {
+    const store = useUserStore();
+    
+  axios.get('http://localhost:8081/user/role/'+store.username)
+    .then(response => {
+      console.log(response.data);
+      console.log(store.username);
+
+       
+         this.fullImagePath = require(`@/pics/${response.data}`);
+                
+    })
+    .catch(error => {
+      console.error(error);
+    });
+},
   methods: {
     dismissAlert() {
       this.showDismissibleAlert = false;
