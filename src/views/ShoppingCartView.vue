@@ -13,7 +13,7 @@
                 <small>Price: {{ formatPrice(item.price) }}€ each</small>
               </div>
               <div>
-                <b-button variant="warning" @click="changeQuantity(item, -1)" :disabled="item.quantity <= 1">-</b-button>
+                <ButtonAtom  @click="changeQuantity(item, -1)" :disabled="item.quantity <= 1">-</ButtonAtom>
                 <b-button variant="danger" @click="removeFromCart(item)">Remove</b-button>
               </div>
             </b-list-group-item>
@@ -21,7 +21,7 @@
 
           <div class="mt-3">
             <h4>Total Price: {{ formatPrice(totalPrice) }}€</h4>
-            <b-button variant="primary" class="mr-2" @click="checkOut">Checkout</b-button>
+            <ButtonAtom @click="checkOut">Checkout</ButtonAtom>
             <b-button variant="danger" @click="clearCart">Clear Cart</b-button>
           </div>
         </div>
@@ -34,8 +34,12 @@
 
 <script>
 import axios from 'axios';
+import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
 
 export default {
+  components: {
+    ButtonAtom,
+  },
   data() {
     return {
       cart: []

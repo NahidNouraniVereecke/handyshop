@@ -25,7 +25,7 @@
                   <strong>Created On:</strong> {{ formatDateTime(order.createdOn) }}<br>
                   <strong>Created By:</strong> {{ order.user.username }}
                 </p>
-                <button @click="editOrder(order)" class="btn btn-primary btn-sm">Details</button>
+                <ButtonAtom @click="editOrder(order)" class="btn btn-primary btn-sm">Details</ButtonAtom>
               </div>
             </div>
           </div>
@@ -36,8 +36,11 @@
   
   <script>
   import axios from 'axios';
-  
+  import  ButtonAtom from "@/components/atoms/ButtonAtom.vue";
   export default {
+    components: {
+    ButtonAtom,
+  },
     data() {
       return {
         orders: [],

@@ -17,6 +17,6 @@
   .button{
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 150px;
+    width: 100;
   }
   </style>

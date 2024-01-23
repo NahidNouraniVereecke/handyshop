@@ -1,5 +1,5 @@
 <template>
-    <img :src="src" alt="Product Image" class="product-image" @click="handleClick" />
+    <img :src="require(`@/pics/${src}`)" alt="Product Image" class="product-image" @click="handleClick" />
   </template>
   
   <script>
@@ -19,8 +19,10 @@
   
   <style scoped>
   .product-image {
-    max-width: 100%;
-    cursor: pointer;
+  width: auto;
+  max-width: 300px;
+  height: 200px; 
+  cursor: pointer;
   }
   </style>
   

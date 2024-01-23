@@ -26,7 +26,7 @@
                 <div class="col-md-6">
                   <p><strong>Brand:</strong> {{ phone.brand.name }}</p>
                   <p><strong>Picture Path:</strong> {{ phone.picturePath || 'N/A' }}</p>
-                  <ImageAtom :src="phone.picturePath" @click="goToProductPage" />
+                  <ImageAtom :src="phone.picture" @click="goToProductPage" />
                 </div>
               </div>
             </li>

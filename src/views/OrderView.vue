@@ -23,7 +23,7 @@
                   </ul>
                   <strong>Total Amount:</strong> {{ formatPrice(calculateTotalAmount(order.phones)) }}€<br>
                 </p>
-                <button @click="editOrder(order)" class="btn btn-primary btn-sm">Detail</button>
+                <ButtonAtom @click="editOrder(order)" class="btn btn-primary btn-sm">Detail</ButtonAtom>
               </div>
             </div>
           </div>
@@ -34,8 +34,12 @@
   
   <script>
   import axios from 'axios';
-  
-  export default {
+  import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
+
+export default {
+  components: {
+    ButtonAtom,
+  },
     data() {
       return {
         orders: [],

@@ -358,8 +358,8 @@
               <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload"
                 accept="image/*">
             </div>
-            <button class="btn btn-primary" type="button" @click="saveChanges">Save changes</button>
-            <button class="btn btn-primary" type="button" @click="deleteUser">Delete Account</button>
+            <ButtonAtom  type="button" @click="saveChanges">Save changes</ButtonAtom>
+            <ButtonAtom  type="button" @click="deleteUser">Delete Account</ButtonAtom>
           </div>
         </form>
       </div>
@@ -374,8 +374,17 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 import * as Yup from 'yup';
+import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
 
 export default {
+  components: {
+    ButtonAtom,
+  },
+  data(){
+    return{
+      fullImagePath: '',
+    };
+  },
   setup() {
     const router = useRouter();
     const imageFile = ref(null)
