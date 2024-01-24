@@ -27,13 +27,10 @@
   display: flex;  
   flex-wrap: wrap; /* Erlaubt das Umbruch der Zeilen */
   align-items: center; /* Zentriert die Kinder vertikal */
-  max-width: 600px; /* Setzt eine maximale Breite für den Container */
-  margin-top: -30px;
+  max-width: 600px;
+ /* Setzt eine maximale Breite für den Container */
+
 }
-
-
-
-
 /* Du könntest auch margin für die ParagraphAtom-Komponente setzen, wenn du möchtest */
 .imprint-molecule p {
   white-space: pre-line; /* Erlaubt den Umbruch bei Zeilenumbrüchen und Leerzeichen */

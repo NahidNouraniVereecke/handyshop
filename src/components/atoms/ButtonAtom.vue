@@ -1,7 +1,7 @@
 <template>
-    <button @click="handleClick" class="button">
+    <b-button @click="handleClick" class="button">
       <slot></slot>
-    </button>
+    </b-button>
   </template>
   
   <script>
@@ -15,9 +15,8 @@
   
   <style scoped>
   .button{
-    height: 35px;
-    margin: 10px;
-    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100;
   }
-  
   </style>

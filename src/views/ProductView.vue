@@ -1,7 +1,10 @@
 <template>
+  <div>
+    <input type="text" v-model="searchQuery" placeholder="Search products..." />
+
     <div class="product-view">
       <ProductCard
-        v-for="product in products"
+        v-for="product in filteredProducts"
         :key="product.id"
         :title="product.title"
         :image="product.image"
@@ -11,72 +14,56 @@
         :productId="product.id"
       />
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
+  import axios from 'axios';
   import ProductCard from "@/components/molecules/ProductCard.vue";
   
   export default {
-    components: {
-      ProductCard,
-    },
-    data() {
-      return {
-        products: [
-          {
-            id: "1",
-            title: "iPhone X",
-            image: "https://via.placeholder.com/150",
-            price: 800.00,
-            shortDescription: ".....",
-            deliveryTime: "2-3 days",
-          },
-          {
-            id: "2",
-            title: "Galaxy S9",
-            image: "https://via.placeholder.com/150",
-            price: 1100.00,
-            shortDescription: "......",
-            deliveryTime: "2-3 days",
-          },
-          {
-            id: "3",
-            title: "iPhone 13",
-            image: "https://via.placeholder.com/150",
-            price: 1500.00,
-            shortDescription: ".......",
-            deliveryTime: "2-3 days",
-          },
-          {
-            id: "4",
-            title: "Iphone 12",
-            image: "https://via.placeholder.com/150",
-            price: 1800.00,
-            shortDescription: "......",
-            deliveryTime: "2-3 days",
-          },
-          {
-            id: "5",
-            title: "Galaxy S20",
-            image: "https://via.placeholder.com/150",
-            price: 1500.00,
-            shortDescription: ".........",
-            deliveryTime: "2-3 days",
-          },
-         
-          {
-            id: "6",
-            title: "Galaxy S22 Ultra",
-            image: "https://via.placeholder.com/150",
-            price: 1500.00,
-            shortDescription: ".....",
-            deliveryTime: "3-5 days",
-          },
-        ],
-      };
-    },
-  };
-  </script>
+  components: {
+    ProductCard,
+  },
+  data() {
+    return {
+      searchQuery: '',
+      products: []  
+    };
+  },
+  mounted() {
+    this.fetchPhones();
+  },
+  methods: {
+    async fetchPhones() {
+      try {
+        const response = await axios.get('http://localhost:8081/phones');  
+        this.products = response.data.map(phone => ({
+          id: phone.id,
+          title: phone.name,
+          image: phone.picture,  
+          price: phone.price,
+          shortDescription: phone.description,  
+          deliveryTime: "2-3 days"  
+        }));
+      } catch (error) {
+        console.error('Error fetching phones:', error);
+      }
+    }
+  },
+  computed: {
+    filteredProducts() {
+      if (!this.searchQuery) {
+        return this.products;
+      }
+      return this.products.filter(product => 
+        product.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  }
+};
+</script>
+ 
   
   <style scoped>
   .product-view {
