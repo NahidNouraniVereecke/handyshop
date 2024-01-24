@@ -447,7 +447,7 @@ import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
           .matches(/^\d+$/, 'Postal code must consist of numbers only')
           .min(4, 'Postal code must be at least 4 digits long'),
       city: Yup.string().required('City is required'),
-      country: Yup.string().required('Country is required'),
+      countryCode: Yup.string().required('Country is required'),
 
     });
 
@@ -463,7 +463,7 @@ import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
       houseNumber: '',
       postalCode: '',
       city: '',
-      country: '',
+      countryCode: '',
 
     });
     const handleFileUpload = event => {
@@ -530,7 +530,7 @@ import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
           houseNumber: store.houseNumber,
           postalCode: store.postalCode,
           city: store.city,
-          country: store.countryCode,
+          countryCode: store.countryCode,
         };
 
         console.log('Validating user input', userInput);
@@ -577,13 +577,27 @@ import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
     };
 
     const submit = async (userData, oldUsername) => {
+      console.log(oldUsername);
+      const accessToken2 = localStorage.getItem('access_token');
       console.log('submit - start', userData);
       console.log('submit - end');
-      if (store.salutation === 'OTHER') {
+
+      try {
+        const newOldUsername = localStorage.getItem('username');
+          const backendUrlImage = 'http://localhost:8081/user/image/'+newOldUsername;
+
+          const response = await axios.get(backendUrlImage, {
+            headers: {
+              'Authorization': `Bearer ${accessToken2}`,
+            },
+          });
+          const file = response.data
+
+          if (store.salutation === 'OTHER') {
         userData.salutation = store.otherinfo;
       }
       try {
-        const backendUrl = `http://localhost:8081/updateUser/${oldUsername}?password=${userData.password}&role=${store.userRole}&firstname=${userData.firstname}&lastname=${userData.lastname}&salutation=${userData.salutation}&email=${userData.email}&countryCode=${userData.countryCode}&status=${true}&profilePicture=${null}&street=${userData.street}&houseNumber=${userData.houseNumber}&city=${userData.city}&postalCode=${userData.postalCode}&username=${userData.username}`;
+        const backendUrl = `http://localhost:8081/updateUser/${newOldUsername}?password=${userData.password}&role=${store.userRole}&firstname=${userData.firstname}&lastname=${userData.lastname}&salutation=${userData.salutation}&email=${userData.email}&countryCode=${userData.countryCode}&status=${true}&profilePicture=${file}&street=${userData.street}&houseNumber=${userData.houseNumber}&city=${userData.city}&postalCode=${userData.postalCode}&username=${userData.username}`;
         const accessToken = localStorage.getItem('access_token');
 
         console.log(accessToken);
@@ -627,6 +641,16 @@ import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
         showDismissibleAlert.value = true;
         dismissAlertAfterDelay();
       }
+
+        } catch (err) {
+          console.error('Token not successful:', err);
+        }
+
+      
+
+
+      
+      
     };
 
 
