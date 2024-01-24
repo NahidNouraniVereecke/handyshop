@@ -58,10 +58,6 @@
                                 :placeholder="formData.price ? formData.price : 'Enter the price'">
                             <div v-if="errors.price" class="error">{{ errors.price }}</div>
                         </div>
-                        <div class="input-field">
-                            <label for="imageUpload" class="form-label">Upload Image</label>
-                            <input class="form-control" type="file" id="imageUpload">
-                        </div>
 
                         <ButtonAtom class="btn btn-primary" type="button" @click="submitForm">Update</ButtonAtom>
                         <ButtonAtom class="btn btn-primary" type="button" @click="deletePhone">Delete</ButtonAtom>

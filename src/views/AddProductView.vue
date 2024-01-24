@@ -28,8 +28,6 @@
                                 <input class="form-control" type="text" v-model="newBrandName"
                                     placeholder="Neue Markenname" />
                                 <div v-if="errors.newBrandName" class="error">{{ errors.newBrandName }}</div>
-                                <label class="small mb-1" for="inputBrandName">Brand picture</label>
-                                <input class="form-control" type="file" @change="handleFileChange" />
                             </div>
                         </div>
                         <div class="form-field">

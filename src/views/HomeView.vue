@@ -4,9 +4,9 @@
       <HeaderAtom type="h1">Handyshop</HeaderAtom>
     </header>
     
-      <ParagraphAtom>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.:</ParagraphAtom>
+      
     
-      <TitleAtom :text="'Our Best Sellers:'" />
+      <TitleAtom :text="'Buy the newst Phones for the best prices in our onlineshop!'" />
 
       <b-row class="product-view">
         
@@ -15,14 +15,12 @@
 </template>
 
 <script>
-import ParagraphAtom from '@/components/atoms/ParagraphAtom.vue';
 import HeaderAtom from '@/components/atoms/headerAtom.vue';
 import TitleAtom from '@/components/atoms/TitleAtom.vue';
 
 export default {
   components: {
     HeaderAtom,
-    ParagraphAtom,
     TitleAtom
   },
   data() {
