@@ -1,11 +1,11 @@
 <template>
   <div class="product-card">
-    <ImageAtom :src="require(`@/pics/${image}`)" @click="goToProductPage" />
-        <TitleAtom :text="title" />
+    <ImageAtom :src="image ? require(`@/pics/${image}`) : require('@/pics/placeholder.jpg')" @click="goToProductPage" />
+            <TitleAtom :text="title" />
     <ShortDescriptionAtom :shortDescription="shortDescription" />
     <PriceAtom :price="price" />
     <DeliveryTimeAtom :deliveryTime="deliveryTime" />
-    <ButtonAtom @click="addToCart">Add to cart </ButtonAtom>
+    <ButtonAtom @click="addToCart">Buy </ButtonAtom>
   </div>
 </template>
 
