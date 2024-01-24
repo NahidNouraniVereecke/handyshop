@@ -25,8 +25,6 @@
                 </div>
                 <div class="col-md-6">
                   <p><strong>Brand:</strong> {{ phone.brand.name }}</p>
-                  <p><strong>Picture Path:</strong> {{ phone.picturePath || 'N/A' }}</p>
-                  <ImageAtom :src="phone.picture" @click="goToProductPage" />
                 </div>
               </div>
             </li>
@@ -49,12 +47,9 @@
   
   <script>
 import axios from 'axios';
-import ImageAtom from "@/components/atoms/ImageAtom.vue";
 
   export default {
-    components: {
-    ImageAtom,
-  },
+   
     data() {
       return {
         order: [],

@@ -13,7 +13,7 @@
         <form>
           <div class="container-fluid">
             <div>
-              <img :src="fullImagePath" alt="Profilepic">
+              <ImageAtom :src="fullImagePath" @click="goToProductPage"></ImageAtom>
                 <br>
               <label class="small mb-1" for="inputSalutation">Salutation</label>
               <select class="form-control" id="inputSalutation" v-model="store.salutation">
@@ -358,8 +358,8 @@
               <input class="form-control" type="file" id="imageUpload" ref="imageInput" @change="handleFileUpload"
                 accept="image/*">
             </div>
-            <button class="btn btn-primary" type="button" @click="saveChanges">Save changes</button>
-            <button class="btn btn-primary" type="button" @click="deleteUser">Delete Account</button>
+            <ButtonAtom class="btn btn-primary" type="button" @click="saveChanges">Save changes</ButtonAtom>
+            <ButtonAtom class="btn btn-primary" type="button" @click="deleteUser">Delete Account</ButtonAtom>
           </div>
         </form>
       </div>
@@ -374,8 +374,15 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 import * as Yup from 'yup';
+import ImageAtom from "@/components/atoms/ImageAtom.vue";
+import ButtonAtom from "@/components/atoms/ButtonAtom.vue";
 
-export default {
+
+  export default {
+    components: {
+    ImageAtom,
+    ButtonAtom,
+  },
   data() {
     return {
       fullImagePath: '', 
@@ -589,6 +596,7 @@ export default {
           }
         });
         console.log('Update Message:', response.data);
+        const user = response.data;
 
 
         try {
@@ -604,6 +612,8 @@ export default {
           localStorage.setItem('access_token', token);
           const accessTokenNew = localStorage.getItem('access_token');
           console.log('Token successful: ', accessTokenNew)
+          localStorage.setItem('role', user.role);
+          localStorage.setItem('username', user.username)
         } catch (err) {
           console.error('Token not successful:', err);
         }
@@ -638,10 +648,12 @@ export default {
   mounted() {
     const store = useUserStore();
     const accessToken2 = localStorage.getItem('access_token');
+    const username = localStorage.getItem('username')
+    console.log(store.username);
 
     console.log(accessToken2);
  
-axios.get('http://localhost:8081/user/image/'+store.username
+axios.get('http://localhost:8081/user/image/'+username
  , {
   headers: {
     'Authorization': `Bearer ${accessToken2}`

@@ -21,7 +21,7 @@
   .product-image {
   width: auto;
   max-width: 300px;
-  height: 200px; 
+  max-height: 200px; 
   cursor: pointer;
   }
   </style>
